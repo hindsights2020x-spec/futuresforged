@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FuturesForged — Forged for Funded Traders</title>
+<meta name="description" content="FuturesForged is precision-built automation for prop firm futures traders. Select your firm, enter credentials, and trade NQ and ES on autopilot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --bg:        #060d16;
+  --bg2:       #0a1520;
+  --bg3:       #0f1f30;
+  --border:    #0e2a3a;
+  --border2:   #163347;
+  --accent:    #00d4ff;
+  --accent2:   #0099cc;
+  --green:     #22d08a;
+  --red:       #ff4c6e;
+  --gold:      #f0a500;
+  --text:      #c5d4e0;
+  --text2:     #6a8fa8;
+  --text3:     #3d6278;
+  --white:     #e8f4ff;
+  --mono:      'Share Tech Mono', monospace;
+  --display:   'Rajdhani', sans-serif;
+  --body:      'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── UTILITIES ───────────────────────────────────────────── */
+.wrap    { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.mono    { font-family: var(--mono); }
+.accent  { color: var(--accent); }
+.green   { color: var(--green); }
+.gold    { color: var(--gold); }
+.muted   { color: var(--text2); }
+
+/* ── GRID LINES ─────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6,13,22,.92);
+  backdrop-filter: blur(12px);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.logo span { color: var(--white); }
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text2);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  background: rgba(0,212,255,.1);
+  border: 1px solid rgba(0,212,255,.4);
+  color: var(--accent) !important;
+  padding: 8px 20px;
+  font-size: 11px !important;
+  letter-spacing: 2px;
+  transition: background .2s !important;
+}
+.nav-cta:hover { background: rgba(0,212,255,.2) !important; }
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(0,212,255,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; padding: 80px 0; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,212,255,.08);
+  border: 1px solid rgba(0,212,255,.25);
+  padding: 6px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.0;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 24px;
+  max-width: 800px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-sub {
+  font-size: 18px;
+  color: var(--text2);
+  max-width: 560px;
+  margin-bottom: 48px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 64px;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #000;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 3px;
+  padding: 14px 32px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity .2s, transform .1s;
+}
+.btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 3px;
+  padding: 13px 32px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid var(--border2);
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 40px;
+  width: fit-content;
+}
+.hero-stat-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--white);
+}
+.hero-stat-val span { color: var(--accent); }
+.hero-stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── TICKER ──────────────────────────────────────────────── */
+.ticker {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-track {
+  display: inline-flex;
+  gap: 48px;
+  animation: scroll 30s linear infinite;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  letter-spacing: 1px;
+}
+.ticker-dot { color: var(--green); }
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── SECTION BASE ───────────────────────────────────────── */
+section { position: relative; z-index: 1; }
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--white);
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--text2);
+  max-width: 560px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── HOW IT WORKS ────────────────────────────────────────── */
+.how { padding: 100px 0; }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 64px;
+  border: 1px solid var(--border);
+}
+.step {
+  padding: 32px 28px;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.step:last-child { border-right: none; }
+.step-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.step-icon {
+  width: 40px; height: 40px;
+  background: rgba(0,212,255,.08);
+  border: 1px solid rgba(0,212,255,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.step h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.step p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+.step-connector {
+  position: absolute;
+  top: 50px; right: -13px;
+  width: 24px; height: 1px;
+  background: var(--accent);
+  z-index: 2;
+}
+.step-connector::after {
+  content: '';
+  position: absolute;
+  right: -1px; top: -3px;
+  border: 4px solid transparent;
+  border-left-color: var(--accent);
+}
+
+/* ── FEATURES ────────────────────────────────────────────── */
+.features { padding: 100px 0; background: var(--bg2); }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 64px;
+}
+.feature {
+  background: var(--bg2);
+  padding: 36px 32px;
+  transition: background .2s;
+}
+.feature:hover { background: var(--bg3); }
+.feat-icon {
+  font-family: var(--mono);
+  font-size: 22px;
+  color: var(--accent);
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+.feature h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.feature p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+.feat-tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--green);
+  border: 1px solid rgba(34,208,138,.25);
+  padding: 3px 10px;
+}
+
+/* ── PROP FIRMS ──────────────────────────────────────────── */
+.firms { padding: 100px 0; }
+.firms-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  margin-top: 48px;
+}
+.firm-card {
+  background: var(--bg2);
+  padding: 28px 20px;
+  text-align: center;
+  transition: background .2s;
+}
+.firm-card:hover { background: var(--bg3); }
+.firm-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.firm-plans {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+.firm-status {
+  display: inline-block;
+  margin-top: 12px;
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
+.firm-add {
+  background: var(--bg2);
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px dashed var(--border2);
+}
+.firm-add-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 2px;
+}
+
+/* ── STRATEGIES ──────────────────────────────────────────── */
+.strategies { padding: 100px 0; background: var(--bg2); }
+.strat-list {
+  margin-top: 48px;
+  border: 1px solid var(--border);
+}
+.strat-item {
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  gap: 32px;
+}
+.strat-item:last-child { border-bottom: none; }
+.strat-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: var(--white);
+}
+.strat-session {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.strat-desc {
+  font-size: 14px;
+  color: var(--text2);
+}
+.strat-metric {
+  text-align: right;
+}
+.strat-pf {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--green);
+}
+.strat-pf-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+.strat-tier {
+  display: inline-block;
+  margin-left: 16px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+}
+.tier-basic { color: var(--text2); border: 1px solid var(--border2); }
+.tier-pro   { color: var(--gold);  border: 1px solid rgba(240,165,0,.3); }
+
+/* ── PRICING ─────────────────────────────────────────────── */
+.pricing { padding: 100px 0; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin-top: 64px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.plan {
+  background: var(--bg2);
+  padding: 48px 40px;
+  position: relative;
+}
+.plan-featured {
+  background: var(--bg3);
+  border: 1px solid rgba(0,212,255,.2);
+}
+.plan-badge {
+  position: absolute;
+  top: -1px; right: 32px;
+  background: var(--accent);
+  color: #000;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 4px 12px;
+  font-weight: 700;
+}
+.plan-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--text2);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.plan-amount {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 52px;
+  color: var(--white);
+  line-height: 1;
+}
+.plan-period {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text3);
+}
+.plan-save {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 1px;
+  margin-bottom: 32px;
+}
+.plan-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.plan-features { list-style: none; margin-bottom: 40px; }
+.plan-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text);
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(14,42,58,.5);
+}
+.plan-features li:last-child { border-bottom: none; }
+.check { color: var(--green); font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+.check-dim { color: var(--text3); }
+.btn-plan {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all .2s;
+}
+.btn-plan-basic {
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+.btn-plan-basic:hover { border-color: var(--accent); color: var(--accent); }
+.btn-plan-pro {
+  background: var(--accent);
+  color: #000;
+}
+.btn-plan-pro:hover { opacity: .9; }
+
+/* ── FAQ ─────────────────────────────────────────────────── */
+.faq { padding: 100px 0; background: var(--bg2); }
+.faq-list { margin-top: 48px; max-width: 720px; }
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+}
+.faq-q {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: .5px;
+}
+.faq-q::after {
+  content: '+';
+  font-family: var(--mono);
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: 400;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+.faq-a {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-top: 14px;
+  display: none;
+}
+.faq-item.open .faq-q::after { content: '−'; }
+.faq-item.open .faq-a { display: block; }
+
+/* ── CTA BANNER ──────────────────────────────────────────── */
+.cta-banner {
+  padding: 80px 0;
+  background: linear-gradient(135deg, rgba(0,212,255,.06) 0%, transparent 60%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.cta-banner h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 48px);
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.cta-banner p {
+  font-size: 16px;
+  color: var(--text2);
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  padding: 48px 0 32px;
+  border-top: 1px solid var(--border);
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand .logo { display: block; margin-bottom: 12px; font-size: 18px; }
+.footer-brand p {
+  font-size: 13px;
+  color: var(--text3);
+  line-height: 1.6;
+  max-width: 260px;
+}
+.footer-links h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-links ul { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a {
+  font-size: 14px;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.footer-legal {
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.6;
+  max-width: 700px;
+}
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .steps { grid-template-columns: 1fr 1fr; }
+  .step-connector { display: none; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .firms-grid { grid-template-columns: repeat(3, 1fr); }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; }
+  .nav-links { display: none; }
+  .strat-item { grid-template-columns: 1fr; }
+  .hero-stats { grid-template-columns: repeat(2, auto); }
+}
+@media (max-width: 600px) {
+  .steps { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .firms-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-stats { grid-template-columns: 1fr; }
+}
+
+/* ── AFFILIATE ───────────────────────────────────────────── */
+.affiliate { padding: 100px 0; }
+.aff-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 64px;
+}
+.aff-tiers {
+  border: 1px solid var(--border);
+}
+.aff-tier {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+}
+.aff-tier:last-child { border-bottom: none; }
+.aff-pct {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--white);
+}
+.aff-pct span { color: var(--gold); }
+.aff-tier-name {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.aff-tier-desc {
+  font-size: 13px;
+  color: var(--text2);
+}
+.aff-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.aff-perk {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.aff-perk-icon {
+  font-family: var(--mono);
+  font-size: 16px;
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.aff-perk h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.aff-perk p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.aff-cta-box {
+  margin-top: 48px;
+  background: rgba(240,165,0,.06);
+  border: 1px solid rgba(240,165,0,.2);
+  padding: 36px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.aff-cta-text h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.aff-cta-text p {
+  font-size: 14px;
+  color: var(--text2);
+}
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: #000;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 3px;
+  padding: 13px 28px;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: opacity .2s;
+  flex-shrink: 0;
+}
+.btn-gold:hover { opacity: .9; }
+.aff-calc {
+  margin-top: 48px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 32px;
+}
+.aff-calc h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--white);
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(14,42,58,.5);
+  gap: 16px;
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-label {
+  font-size: 13px;
+  color: var(--text2);
+}
+.calc-slider { flex: 1; margin: 0 16px; accent-color: var(--gold); }
+.calc-val {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--white);
+  min-width: 60px;
+  text-align: right;
+}
+.calc-result {
+  margin-top: 24px;
+  background: rgba(240,165,0,.08);
+  border: 1px solid rgba(240,165,0,.2);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.calc-result-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+.calc-result-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--gold);
+}
+@media (max-width: 900px) {
+  .aff-grid { grid-template-columns: 1fr; }
+  .aff-cta-box { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#">FUTURES<span>FORGED</span></a>
+    <ul class="nav-links">
+      <li><a href="#how">How it Works</a></li>
+      <li><a href="#strategies">Strategies</a></li>
+      <li><a href="#firms">Prop Firms</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#affiliate">Affiliates</a></li>
+      <li><a href="#pricing" class="nav-cta">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-content">
+    <div class="hero-badge mono">LIVE SYSTEM ACTIVE</div>
+    <h1>Forged for<br><em>funded traders.</em></h1>
+    <p class="hero-sub">
+      FuturesForged plugs directly into your prop firm account and trades
+      NQ and ES futures using institutional-grade algorithms — precision-built,
+      fully automated, fully rule-compliant.
+    </p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">Start Trading →</a>
+      <a href="#how" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-val">4.<span>14</span></div>
+        <div class="hero-stat-label">OOS Profit Factor</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">78<span>%</span></div>
+        <div class="hero-stat-label">Walk-Forward Win Rate</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">5<span>+</span></div>
+        <div class="hero-stat-label">Live Strategies</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <!-- First copy -->
+    <span class="ticker-item"><span class="ticker-dot">●</span> MyFundedFutures — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Apex Trader Funding — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Topstep — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> TradeDay — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Earn2Trade — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> NQ Futures — Live</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> ES Futures — Live</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Tradovate — Integrated</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-dot">●</span> MyFundedFutures — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Apex Trader Funding — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Topstep — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> TradeDay — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Earn2Trade — Supported</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> NQ Futures — Live</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> ES Futures — Live</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> Tradovate — Integrated</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-label">// SETUP</div>
+    <h2 class="section-title">Up and running<br>in four steps.</h2>
+    <p class="section-sub">No coding required. No manual configuration. Select your firm, enter your credentials, and FuturesForged handles the rest.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">🏢</div>
+        <h3>Choose Your Firm</h3>
+        <p>Select your prop firm from our pre-configured list. All rules, sizing limits, and trailing thresholds are hardwired in.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">🔑</div>
+        <h3>Enter Credentials</h3>
+        <p>Connect your Tradovate account. FuturesForged discovers your accounts automatically and maps them to the right rule set.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">⚡</div>
+        <h3>Enable Strategies</h3>
+        <p>Toggle which strategies to run from the live dashboard. Each strategy is independently controlled per account.</p>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-icon">📊</div>
+        <h3>Monitor Live</h3>
+        <p>Watch positions, P&L, and signals in real time from your browser dashboard. Emergency stop available at any moment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-label">// TECHNOLOGY</div>
+    <h2 class="section-title">Built for serious<br>prop firm traders.</h2>
+    <p class="section-sub">Every feature is designed around the specific rules and constraints of funded trading accounts.</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feat-icon">[ATR]</div>
+        <h3>Dynamic Position Sizing</h3>
+        <p>Contracts scale automatically with your account balance. MNQ → NQ auto-switch as your cushion grows. Never overexpose on a thin account.</p>
+        <span class="feat-tag">LIVE</span>
+      </div>
+      <div class="feature">
+        <div class="feat-icon">[EOD]</div>
+        <h3>Prop Rule Enforcement</h3>
+        <p>Daily loss limits, EOD trailing floors, intraday floors, 50% consistency rules, and $9,500 daily caps all enforced automatically.</p>
+        <span class="feat-tag">LIVE</span>
+      </div>
+      <div class="feature">
+        <div class="feat-icon">[6/6]</div>
+        <h3>6-Indicator Signal Gate</h3>
+        <p>Momentum Breakout requires 5 of 6 indicators to confirm before entry. EMA stack, RSI, VWAP, Bollinger, MACD, and volume surge.</p>
+        <span class="feat-tag">LIVE</span>
+      </div>
+      <div class="feature">
+        <div class="feat-icon">[WF]</div>
+        <h3>Walk-Forward Validated</h3>
+        <p>All strategies are validated on out-of-sample data before deployment. No curve fitting. OOS Profit Factor of 4.14 on NQ.</p>
+        <span class="feat-tag">VERIFIED</span>
+      </div>
+      <div class="feature">
+        <div class="feat-icon">[AI]</div>
+        <h3>Strategy Generator</h3>
+        <p>Pro subscribers get access to our automated strategy discovery engine. Tests 1,150+ parameter combinations and surfaces new edge.</p>
+        <span class="feat-tag">PRO ONLY</span>
+      </div>
+      <div class="feature">
+        <div class="feat-icon">[Ψ]</div>
+        <h3>Regime Scanner</h3>
+        <p>Real-time market regime detection across 1m, 5m, and 15m bars. Automatically pauses trend strategies when conditions turn choppy.</p>
+        <span class="feat-tag">PRO ONLY</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROP FIRMS -->
+<section class="firms" id="firms">
+  <div class="wrap">
+    <div class="section-label">// SUPPORTED FIRMS</div>
+    <h2 class="section-title">One click setup<br>for every major firm.</h2>
+    <p class="section-sub">Rules, contract limits, trailing thresholds, and daily caps are pre-configured. You just add credentials.</p>
+    <div class="firms-grid">
+      <div class="firm-card">
+        <div class="firm-name">MFF</div>
+        <div class="firm-plans">25K / 50K / 100K</div>
+        <div><div class="firm-status"></div></div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">APEX</div>
+        <div class="firm-plans">25K / 50K / 100K / 150K</div>
+        <div><div class="firm-status"></div></div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">TOPSTEP</div>
+        <div class="firm-plans">50K / 100K / 150K</div>
+        <div><div class="firm-status"></div></div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">TRADEDAY</div>
+        <div class="firm-plans">25K / 50K / 100K</div>
+        <div><div class="firm-status"></div></div>
+      </div>
+      <div class="firm-card">
+        <div class="firm-name">EARN2TRADE</div>
+        <div class="firm-plans">25K / 50K / 100K</div>
+        <div><div class="firm-status"></div></div>
+      </div>
+      <div class="firm-add">
+        <div class="firm-add-text">MORE FIRMS ADDED REGULARLY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIES -->
+<section class="strategies" id="strategies">
+  <div class="wrap">
+    <div class="section-label">// LIVE STRATEGIES</div>
+    <h2 class="section-title">Five proven strategies.<br>All independently toggleable.</h2>
+    <div class="strat-list">
+      <div class="strat-item">
+        <div>
+          <div class="strat-name">Sweep & Reverse <span class="strat-tier tier-basic">BASIC</span></div>
+          <div class="strat-session mono">13:00 – 17:00 UTC</div>
+        </div>
+        <div class="strat-desc">Detects liquidity sweeps of prior session highs/lows and fades the move back through the level. ATR-based stops and targets.</div>
+        <div class="strat-metric">
+          <div class="strat-pf">2.22</div>
+          <div class="strat-pf-label">OOS PF</div>
+        </div>
+      </div>
+      <div class="strat-item">
+        <div>
+          <div class="strat-name">Box MR London <span class="strat-tier tier-basic">BASIC</span></div>
+          <div class="strat-session mono">08:00 – 10:00 UTC</div>
+        </div>
+        <div class="strat-desc">Forms a consolidation box during the London pre-market and trades mean reversion back into the range on false breakouts.</div>
+        <div class="strat-metric">
+          <div class="strat-pf">1.87</div>
+          <div class="strat-pf-label">OOS PF</div>
+        </div>
+      </div>
+      <div class="strat-item">
+        <div>
+          <div class="strat-name">Box MR Power Hour <span class="strat-tier tier-basic">BASIC</span></div>
+          <div class="strat-session mono">20:00 – 21:00 UTC</div>
+        </div>
+        <div class="strat-desc">Same box mean reversion logic applied to the Power Hour session. Exploits the high-volume, tight-range characteristics of close.</div>
+        <div class="strat-metric">
+          <div class="strat-pf">1.94</div>
+          <div class="strat-pf-label">OOS PF</div>
+        </div>
+      </div>
+      <div class="strat-item">
+        <div>
+          <div class="strat-name">Momentum Breakout NQ <span class="strat-tier tier-pro">PRO</span></div>
+          <div class="strat-session mono">13:00 – 20:00 UTC</div>
+        </div>
+        <div class="strat-desc">1m breakout of 50-bar structural high/low with 6-indicator confluence gate and volume filter. Walk-forward validated on 2 years of NQ data.</div>
+        <div class="strat-metric">
+          <div class="strat-pf">4.14</div>
+          <div class="strat-pf-label">OOS PF</div>
+        </div>
+      </div>
+      <div class="strat-item">
+        <div>
+          <div class="strat-name">Momentum Breakout ES <span class="strat-tier tier-pro">PRO</span></div>
+          <div class="strat-session mono">13:00 – 20:00 UTC</div>
+        </div>
+        <div class="strat-desc">Identical logic applied to ES futures. Trades MES/ES independently of NQ. Correlation scanner monitors NQ/ES divergence in real time.</div>
+        <div class="strat-metric">
+          <div class="strat-pf">3.25</div>
+          <div class="strat-pf-label">OOS PF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-label" style="text-align:center">// PRICING</div>
+    <h2 class="section-title" style="text-align:center">Simple pricing.<br>Cancel any time.</h2>
+    <div class="pricing-grid">
+
+      <!-- STARTER -->
+      <div class="plan">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">
+          <span class="plan-amount">$97</span>
+          <span class="plan-period">/month</span>
+        </div>
+        <div class="plan-save">or $880/year — save $284</div>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Up to 2 prop firm accounts</li>
+          <li><span class="check">✓</span> Sweep & Reverse strategy</li>
+          <li><span class="check">✓</span> Box MR London strategy</li>
+          <li><span class="check">✓</span> Box MR Power Hour strategy</li>
+          <li><span class="check">✓</span> Live dashboard (port 7331)</li>
+          <li><span class="check">✓</span> Dynamic position sizing</li>
+          <li><span class="check">✓</span> All 5 prop firms pre-loaded</li>
+          <li><span class="check">✓</span> Email support</li>
+          <li><span class="check check-dim">✗</span> <span style="color:var(--text3)">Momentum Breakout NQ/ES</span></li>
+          <li><span class="check check-dim">✗</span> <span style="color:var(--text3)">Regime Scanner</span></li>
+          <li><span class="check check-dim">✗</span> <span style="color:var(--text3)">Strategy Generator</span></li>
+        </ul>
+        <!-- Replace href with your Stripe payment link -->
+        <a href="https://buy.stripe.com/YOUR_STARTER_LINK" class="btn-plan btn-plan-basic">GET STARTED</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan plan-featured">
+        <div class="plan-badge">MOST POPULAR</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">
+          <span class="plan-amount">$197</span>
+          <span class="plan-period">/month</span>
+        </div>
+        <div class="plan-save">or $1,788/year — save $576</div>
+        <hr class="plan-divider">
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Unlimited prop firm accounts</li>
+          <li><span class="check">✓</span> All Starter strategies</li>
+          <li><span class="check">✓</span> Momentum Breakout NQ</li>
+          <li><span class="check">✓</span> Momentum Breakout ES</li>
+          <li><span class="check">✓</span> Real-time Regime Scanner</li>
+          <li><span class="check">✓</span> Strategy Performance Scanner</li>
+          <li><span class="check">✓</span> Strategy Generator (AI discovery)</li>
+          <li><span class="check">✓</span> NQ/ES correlation monitoring</li>
+          <li><span class="check">✓</span> Multi-timeframe regime detection</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> Early access to new strategies</li>
+        </ul>
+        <!-- Replace href with your Stripe payment link -->
+        <a href="https://buy.stripe.com/YOUR_PRO_LINK" class="btn-plan btn-plan-pro">GET PRO ACCESS</a>
+      </div>
+
+    </div>
+    <p style="text-align:center;font-size:13px;color:var(--text3);margin-top:24px">
+      30-day money back guarantee. License tied to one machine per subscription.
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-label">// FAQ</div>
+    <h2 class="section-title">Common questions.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Which prop firms are supported?</div>
+        <div class="faq-a">MyFundedFutures, Apex Trader Funding, Topstep, TradeDay, and Earn2Trade are all pre-configured at launch. More firms are added regularly. All account rules — trailing floors, daily caps, consistency rules, and contract limits — are hardwired for each firm and plan size.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do I need to know how to code?</div>
+        <div class="faq-a">No. FuturesForged is a Windows desktop application. You download the installer, enter your Tradovate credentials, select your prop firm and plan size, and enable the strategies you want to run. The live dashboard opens in your browser automatically.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does position sizing work?</div>
+        <div class="faq-a">FuturesForged reads your live account balance from Tradovate on each startup and scales contract size based on your current cushion to the trailing floor. It automatically switches from MNQ to NQ as your account grows, and back to MNQ if cushion gets thin. You never exceed the contract limits set by your prop firm.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will it blow my funded account?</div>
+        <div class="faq-a">FuturesForged enforces your firm's exact rules automatically — it will never let you trade if you're within one stop loss of the floor. Emergency stop, daily loss limits, and intraday trailing floors are all applied in real time. No trading system eliminates risk, but the prop firm rules are enforced more strictly than most human traders follow them manually.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What are the OOS profit factors based on?</div>
+        <div class="faq-a">All stated performance metrics are from out-of-sample walk-forward backtests on 2 years of Databento GLBX.MDP3 1-minute data. The IS/OOS split is 70/30. Past performance does not guarantee future results. These are backtested figures, not live trading results.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I run it on multiple accounts?</div>
+        <div class="faq-a">Starter supports up to 2 accounts. Pro supports unlimited accounts. Each account has its own independent strategy toggles, position sizing, and prop rule enforcement.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the Strategy Generator?</div>
+        <div class="faq-a">Pro subscribers get access to an automated pattern discovery engine that tests over 1,150 parameter combinations on your historical data, walk-forward validates the results, and presents candidate strategies for review. New strategies require seller approval before they go live — they cannot self-deploy.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AFFILIATE -->
+<section class="affiliate" id="affiliate">
+  <div class="wrap">
+    <div class="section-label">// AFFILIATE PROGRAM</div>
+    <h2 class="section-title">Earn 30% recurring<br>commission.</h2>
+    <p class="section-sub">
+      Refer traders to FuturesForged and earn a percentage of every payment
+      they make — for as long as they stay subscribed. No cap, no expiry.
+    </p>
+
+    <div class="aff-grid">
+      <!-- Commission tiers -->
+      <div>
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--text3);margin-bottom:16px">COMMISSION TIERS</div>
+        <div class="aff-tiers">
+          <div class="aff-tier">
+            <div>
+              <div class="aff-pct">20<span>%</span></div>
+            </div>
+            <div>
+              <div class="aff-tier-name">Starter Affiliate</div>
+              <div class="aff-tier-desc">1–4 active referrals. $19.40/mo per Starter, $39.40/mo per Pro subscriber you refer.</div>
+            </div>
+          </div>
+          <div class="aff-tier">
+            <div>
+              <div class="aff-pct" style="color:var(--gold)">25<span>%</span></div>
+            </div>
+            <div>
+              <div class="aff-tier-name">Silver Affiliate</div>
+              <div class="aff-tier-desc">5–14 active referrals. Automatically upgraded when you hit 5 paying subscribers.</div>
+            </div>
+          </div>
+          <div class="aff-tier">
+            <div>
+              <div class="aff-pct" style="color:var(--accent)">30<span>%</span></div>
+            </div>
+            <div>
+              <div class="aff-tier-name">Gold Affiliate</div>
+              <div class="aff-tier-desc">15+ active referrals. $29.10/mo per Starter, $59.10/mo per Pro referral. No ceiling.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Earnings calculator -->
+        <div class="aff-calc">
+          <h3>Earnings Calculator</h3>
+          <div class="calc-row">
+            <span class="calc-label">Starter subscribers</span>
+            <input type="range" class="calc-slider" id="starters" min="0" max="50" value="5">
+            <span class="calc-val" id="starters-val">5</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-label">Pro subscribers</span>
+            <input type="range" class="calc-slider" id="pros" min="0" max="50" value="5">
+            <span class="calc-val" id="pros-val">5</span>
+          </div>
+          <div class="calc-result">
+            <div>
+              <div class="calc-result-label">MONTHLY EARNINGS</div>
+              <div style="font-size:11px;color:var(--text3);margin-top:2px" id="calc-tier-label">Gold tier (30%)</div>
+            </div>
+            <div class="calc-result-val" id="calc-result">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perks -->
+      <div class="aff-perks">
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[$]</div>
+          <div>
+            <h4>Recurring Commissions</h4>
+            <p>Earn on every renewal, not just the first payment. A single Pro referral pays you $59.10 every month indefinitely.</p>
+          </div>
+        </div>
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[→]</div>
+          <div>
+            <h4>Instant Tracking Link</h4>
+            <p>Get your unique affiliate link immediately on approval. Real-time dashboard shows clicks, conversions, and earnings.</p>
+          </div>
+        </div>
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[↑]</div>
+          <div>
+            <h4>Auto Tier Upgrades</h4>
+            <p>Your commission rate upgrades automatically as your referral count grows. No applications, no delays.</p>
+          </div>
+        </div>
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[✓]</div>
+          <div>
+            <h4>Monthly Payouts</h4>
+            <p>Payments processed on the 1st of each month via PayPal or bank transfer. Minimum payout $50.</p>
+          </div>
+        </div>
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[★]</div>
+          <div>
+            <h4>Ready-Made Assets</h4>
+            <p>Banners, email templates, and social content provided. Everything you need to promote FuturesForged from day one.</p>
+          </div>
+        </div>
+        <div class="aff-perk">
+          <div class="aff-perk-icon">[90]</div>
+          <div>
+            <h4>90-Day Cookie Window</h4>
+            <p>If someone clicks your link and subscribes within 90 days, the commission is yours. One of the longest windows in the industry.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aff-cta-box">
+      <div class="aff-cta-text">
+        <h3>Ready to start earning?</h3>
+        <p>Apply takes 2 minutes. Approval within 24 hours. Start earning immediately.</p>
+      </div>
+      <!-- Replace with your affiliate signup link (e.g. Rewardful, PartnerStack, or custom) -->
+      <a href="mailto:affiliates@futuresforged.com" class="btn-gold">APPLY NOW →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="wrap">
+    <h2>Ready to automate your<br>prop firm trading?</h2>
+    <p>Join traders already running FuturesForged on funded accounts.</p>
+    <div class="hero-actions" style="justify-content:center">
+      <a href="#pricing" class="btn-primary">Start with Starter →</a>
+      <a href="#pricing" class="btn-secondary">View Pro Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="logo" href="#">FUTURES<span>FORGED</span></a>
+        <p>Precision-forged futures automation for funded prop firm accounts. Built for NQ and ES.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#how">How it Works</a></li>
+          <li><a href="#strategies">Strategies</a></li>
+          <li><a href="#firms">Prop Firms</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="mailto:support@futuresforged.com">support@futuresforged.com</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-legal">
+        <strong style="color:var(--text2)">Risk Disclaimer:</strong>
+        Futures trading involves substantial risk of loss and is not appropriate for all investors.
+        Past performance — including backtested results — is not indicative of future results.
+        FuturesForged is software that automates a trading strategy; it does not guarantee profits or
+        protect against losses. All performance figures shown are from walk-forward backtests on
+        historical data and do not represent live trading results. You should only trade with
+        capital you can afford to lose. FuturesForged is not a registered investment adviser or
+        commodity trading adviser.
+      </p>
+      <div class="footer-copy mono">© 2026 FUTURESFORGED</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Nav highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current
+      ? 'var(--accent)' : '';
+  });
+}, { passive: true });
+
+// Affiliate earnings calculator
+function updateCalc() {
+  const s = parseInt(document.getElementById('starters').value);
+  const p = parseInt(document.getElementById('pros').value);
+  document.getElementById('starters-val').textContent = s;
+  document.getElementById('pros-val').textContent = p;
+
+  const total = s + p;
+  let rate, tier;
+  if (total >= 15) { rate = 0.30; tier = 'Gold tier (30%)'; }
+  else if (total >= 5) { rate = 0.25; tier = 'Silver tier (25%)'; }
+  else { rate = 0.20; tier = 'Starter tier (20%)'; }
+
+  const monthly = (s * 97 + p * 197) * rate;
+  document.getElementById('calc-result').textContent = '$' + Math.round(monthly).toLocaleString();
+  document.getElementById('calc-tier-label').textContent = tier;
+}
+
+['starters', 'pros'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateCalc);
+});
+updateCalc();
+
+</script>
+</body>
+</html>
