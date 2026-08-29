@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signal Performance — FuturesForged</title>
+<meta name="description" content="Simulated results from the FuturesForged signal engine. Hypothetical performance, not broker-confirmed.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://osxwkgmjwtdyvqwlfyre.supabase.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS (matched to index.html) ─────────────────────── */
+:root {
+  --bg:        #060d16;
+  --bg2:       #0a1520;
+  --bg3:       #0f1f30;
+  --border:    #0e2a3a;
+  --border2:   #163347;
+  --accent:    #00d4ff;
+  --accent2:   #0099cc;
+  --green:     #22d08a;
+  --red:       #ff4c6e;
+  --gold:      #f0a500;
+  --text:      #c5d4e0;
+  --text2:     #6a8fa8;
+  --text3:     #3d6278;
+  --white:     #e8f4ff;
+  --mono:      'Share Tech Mono', monospace;
+  --display:   'Rajdhani', sans-serif;
+  --body:      'Inter', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.wrap    { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.mono    { font-family: var(--mono); }
+.accent  { color: var(--accent); }
+.green   { color: var(--green); }
+.red     { color: var(--red); }
+.muted   { color: var(--text2); }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border);
+  background: rgba(6,13,22,.92);
+  backdrop-filter: blur(12px);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-decoration: none;
+}
+.logo span { color: var(--accent); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .3px;
+  transition: color .18s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.active { color: var(--accent); }
+.nav-cta {
+  border: 1px solid var(--accent);
+  color: var(--accent) !important;
+  padding: 8px 16px;
+  border-radius: 3px;
+}
+.nav-cta:hover { background: rgba(0,212,255,.08); }
+
+/* ── PAGE HEAD ───────────────────────────────────────────── */
+.page-head { padding: 130px 0 0; position: relative; z-index: 1; }
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -.5px;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.page-sub {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+.page-sub .sep { color: var(--text3); margin: 0 8px; }
+
+/* ── DISCLAIMER (body-copy weight, above the fold) ───────── */
+.disclaimer {
+  border: 1px solid var(--gold);
+  border-left-width: 3px;
+  background: rgba(240,165,0,.06);
+  border-radius: 3px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  max-width: 900px;
+}
+.disclaimer h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: .4px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.disclaimer p {
+  font-size: 16px;          /* matches body copy — required, not fine print */
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.data-asof {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--text3);
+  margin-bottom: 8px;
+}
+.sample-badge {
+  display: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  border: 1px solid rgba(240,165,0,.4);
+  background: rgba(240,165,0,.07);
+  border-radius: 3px;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+}
+.sample-badge.show { display: inline-block; }
+
+/* ── SECTIONS ────────────────────────────────────────────── */
+section.block { padding: 52px 0 0; position: relative; z-index: 1; }
+.section-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 26px;
+  letter-spacing: .3px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.section-sub { font-size: 14px; color: var(--text2); margin-bottom: 22px; }
+
+/* ── STAT CARDS ──────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.stat-card {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 3px;
+  padding: 18px 18px 16px;
+}
+.stat-val {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  color: var(--white);
+  letter-spacing: -.5px;
+}
+.stat-val span { color: var(--accent); }
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.6px;
+  color: var(--text3);
+  margin-top: 7px;
+  text-transform: uppercase;
+}
+.stat-note { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+/* ── EQUITY CURVE ────────────────────────────────────────── */
+.chart-shell {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 3px;
+  padding: 20px 18px 12px;
+}
+.chart-scroll { overflow-x: auto; }
+.chart-axis-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  color: var(--text2);
+  margin-bottom: 12px;
+}
+svg.equity { display: block; width: 100%; height: auto; min-width: 520px; }
+svg.equity .grid   { stroke: var(--border); stroke-width: 1; }
+svg.equity .zero   { stroke: var(--border2); stroke-width: 1; stroke-dasharray: 4 4; }
+svg.equity .curve  { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+svg.equity .area   { fill: url(#eqfill); }
+svg.equity text    { font-family: var(--mono); font-size: 10px; fill: var(--text3); }
+
+/* ── TABLES ──────────────────────────────────────────────── */
+.table-shell {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+thead th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: left;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg3);
+  white-space: nowrap;
+}
+thead th.num, tbody td.num, tfoot td.num { text-align: right; }
+thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color .15s;
+}
+thead th.sortable:hover { color: var(--accent); }
+thead th.sortable::after { content: ' ⇅'; opacity: .35; }
+thead th.sortable.asc::after  { content: ' ↑'; opacity: 1; color: var(--accent); }
+thead th.sortable.desc::after { content: ' ↓'; opacity: 1; color: var(--accent); }
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(14,42,58,.55);
+  font-size: 13px;
+  white-space: nowrap;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(0,212,255,.03); }
+td.mono, th.mono { font-family: var(--mono); }
+td.pnl-pos { color: var(--green); }
+td.pnl-neg { color: var(--red); }
+td.nulled  { color: var(--text3); }
+tfoot td {
+  padding: 13px 14px;
+  border-top: 1px solid var(--border2);
+  background: var(--bg3);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .6px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+/* ── PAGINATION ──────────────────────────────────────────── */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg3);
+  flex-wrap: wrap;
+}
+.pager-info { font-family: var(--mono); font-size: 11px; letter-spacing: 1.2px; color: var(--text3); }
+.pager-btns { display: flex; gap: 8px; }
+.pager button {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text2);
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all .15s;
+  min-height: 34px;
+}
+.pager button:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.pager button:disabled { opacity: .3; cursor: not-allowed; }
+
+/* ── STATES ──────────────────────────────────────────────── */
+.state-box {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 3px;
+  padding: 44px 24px;
+  text-align: center;
+}
+.state-box p { font-family: var(--mono); font-size: 13px; letter-spacing: 1.2px; color: var(--text2); }
+.state-box p.err { color: var(--red); }
+.state-box .retry {
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text2);
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.state-box .retry:hover { color: var(--accent); border-color: var(--accent); }
+.hidden { display: none !important; }
+
+/* ── METHODOLOGY ─────────────────────────────────────────── */
+.method {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 3px;
+  padding: 22px 24px;
+}
+.method ul { list-style: none; }
+.method li {
+  font-size: 14px;
+  color: var(--text2);
+  padding: 7px 0 7px 20px;
+  position: relative;
+  line-height: 1.6;
+}
+.method li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  margin-top: 72px;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 40px 0 34px;
+  position: relative;
+  z-index: 1;
+}
+.footer-legal {
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text3);
+  max-width: 900px;
+  margin-bottom: 20px;
+}
+.footer-copy {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--text3);
+}
+.footer-nav { margin-bottom: 22px; display: flex; gap: 20px; flex-wrap: wrap; }
+.footer-nav a { color: var(--text2); text-decoration: none; font-size: 13px; }
+.footer-nav a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+  .page-head { padding-top: 100px; }
+}
+@media (max-width: 560px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-val { font-size: 26px; }
+  .disclaimer { padding: 16px 16px; }
+  .pager { justify-content: center; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="/">FUTURES<span>FORGED</span></a>
+    <ul class="nav-links">
+      <li><a href="/#how">How it Works</a></li>
+      <li><a href="/#strategies">Strategies</a></li>
+      <li><a href="/signal-performance" class="active">Performance</a></li>
+      <li><a href="/#firms">Compatibility</a></li>
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/#security">Security</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="portal.html">Login</a></li>
+      <li><a href="/#pricing" class="nav-cta">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="page-head">
+  <div class="wrap">
+    <div class="section-label">◗ SIGNAL ENGINE OUTPUT</div>
+    <h1>Signal Performance</h1>
+    <p class="page-sub">
+      Simulated results from the FuturesForged signal engine
+      <span class="sep">·</span> Not broker-confirmed
+      <span class="sep">·</span> Sized as 1 micro contract per signal
+    </p>
+
+    <!-- REQUIRED HYPOTHETICAL PERFORMANCE DISCLOSURE — do not move to footer -->
+    <div class="disclaimer">
+      <h2>Hypothetical Performance Disclosure</h2>
+      <p>
+        The results shown on this page are simulated and derived from signals generated by the
+        FuturesForged system. They do not represent actual trading and have not been confirmed by a
+        broker. Hypothetical performance results have many inherent limitations. No representation is
+        being made that any account will or is likely to achieve profits or losses similar to those
+        shown. Past performance is not indicative of future results.
+      </p>
+    </div>
+
+    <div class="sample-badge mono" id="sampleBadge"></div>
+    <div class="data-asof mono" id="dataAsOf">LOADING…</div>
+  </div>
+</header>
+
+<!-- SUMMARY STATS -->
+<section class="block">
+  <div class="wrap">
+    <h2 class="section-title">Summary</h2>
+    <p class="section-sub">Closed signals only. Legacy pre-reconciler rows excluded.</p>
+
+    <div class="state-box" id="statsLoading"><p>◗ QUERYING SIGNAL ENGINE…</p></div>
+    <div class="state-box hidden" id="errorBox">
+      <p class="err" id="errorMsg">◗ COULD NOT LOAD SIGNAL DATA</p>
+      <button class="retry" onclick="loadSignals(true)">RETRY</button>
+    </div>
+    <div class="state-box hidden" id="emptyBox"><p>No closed signals to display yet.</p></div>
+
+    <div class="stats-grid hidden" id="statsGrid"></div>
+  </div>
+</section>
+
+<!-- EQUITY CURVE -->
+<section class="block hidden" id="chartSection">
+  <div class="wrap">
+    <h2 class="section-title">Equity Curve</h2>
+    <p class="section-sub">Cumulative simulated P&amp;L, ordered by close time.</p>
+    <div class="chart-shell">
+      <div class="chart-axis-title">CUMULATIVE SIMULATED P&amp;L ($) &middot; PER 1 MICRO CONTRACT</div>
+      <div class="chart-scroll"><div id="equityChart"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNAL TABLE -->
+<section class="block hidden" id="tableSection">
+  <div class="wrap">
+    <h2 class="section-title">Signal Log</h2>
+    <p class="section-sub">Every closed signal in the sample. Sort by date or P&amp;L.</p>
+    <div class="table-shell">
+      <div class="table-scroll">
+        <table id="signalTable">
+          <thead>
+            <tr>
+              <th class="sortable desc" data-sort="closed_at">Date</th>
+              <th>Symbol</th>
+              <th>Strategy</th>
+              <th class="num">Entry</th>
+              <th class="num">Exit</th>
+              <th class="num sortable" data-sort="pnl">P&amp;L</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="signalBody"></tbody>
+          <tfoot id="signalFoot"></tfoot>
+        </table>
+      </div>
+      <div class="pager">
+        <div class="pager-info" id="pagerInfo"></div>
+        <div class="pager-btns">
+          <button id="prevBtn" onclick="changePage(-1)">← PREV</button>
+          <button id="nextBtn" onclick="changePage(1)">NEXT →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY BREAKDOWN -->
+<section class="block hidden" id="strategySection">
+  <div class="wrap">
+    <h2 class="section-title">By Strategy</h2>
+    <p class="section-sub">Same sample, split by the strategy that generated the signal.</p>
+    <div class="table-shell">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th class="num">Signals</th>
+              <th class="num">Win Rate</th>
+              <th class="num">Total P&amp;L (Simulated)</th>
+            </tr>
+          </thead>
+          <tbody id="strategyBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="block hidden" id="methodSection">
+  <div class="wrap">
+    <h2 class="section-title">Methodology</h2>
+    <p class="section-sub">How these numbers are produced, and what they are not.</p>
+    <div class="method">
+      <ul>
+        <li>Rows come from the FuturesForged <span class="mono">signals</span> table, filtered to signals the engine has marked closed.</li>
+        <li>Entry and exit prices are the signal engine's own view of the market at signal and close time. They are <strong>not</strong> broker fill reports.</li>
+        <li>P&amp;L is computed from those signal prices. It excludes commissions, exchange fees, and slippage, all of which would reduce real-world results.</li>
+        <li>Every figure is normalised to <strong>one micro contract per signal</strong> — $2.00 per point on NQ and MNQ, $5.00 per point on ES and MES. Signals on full-size contracts are reported at their micro equivalent, so these figures do not represent the size actually traded.</li>
+        <li>Legacy test rows that predate the signal reconciler are excluded from every figure on this page.</li>
+        <li>Where the engine did not record a close reason, the table shows <span class="mono">—</span> rather than an inferred value.</li>
+        <li>Broker-confirmed P&amp;L is not yet published. When it is, it will appear as a separate, clearly labelled view — it will not replace this one.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-nav">
+      <a href="/">Home</a>
+      <a href="/#how">How it Works</a>
+      <a href="/#strategies">Strategies</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+      <a href="mailto:support@futuresforged.com">support@futuresforged.com</a>
+    </div>
+    <p class="footer-legal">
+      <strong style="color:var(--text2)">Risk Disclaimer:</strong>
+      Futures trading involves substantial risk of loss and is not appropriate for all investors.
+      Past performance — including backtested and hypothetical results — is not indicative of future
+      results. The figures on this page are simulated, derived from signals generated by the
+      FuturesForged system, and have not been confirmed by a broker. They do not reflect commissions,
+      fees, or slippage. FuturesForged is software that automates a trading strategy; it does not
+      guarantee profits or protect against losses. You should only trade with capital you can afford
+      to lose. FuturesForged is not a registered investment adviser or commodity trading adviser.
+    </p>
+    <div class="footer-copy mono">© 2026 FUTURESFORGED</div>
+  </div>
+</footer>
+
+<script>
+/* ───────────────────────────────────────────────────────────
+   CONFIG
+   Publishable (anon) key. Safe to ship: RLS on public.signals
+   restricts anonymous SELECT to published, closed rows only.
+   ─────────────────────────────────────────────────────────── */
+const SUPABASE_URL  = 'https://osxwkgmjwtdyvqwlfyre.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_6Rz0VGoqTeBzVwNMs0vcCg_ev34l8kb';
+const CACHE_KEY     = 'ff_signal_perf_v1';
+const CACHE_MS      = 5 * 60 * 1000;   // 5 minutes
+const PAGE_SIZE     = 25;
+const SMALL_SAMPLE  = 30;
+
+const STRATEGY_LABELS = {
+  box_mr_london: 'Box MR · London',
+  momentum_es:   'Momentum · ES',
+  momentum_nq:   'Momentum · NQ',
+  mes_scalp:     'MES Scalp'
+};
+const REASON_LABELS = { tp1: 'TP1', tp2: 'TP2', stop: 'Stop', trail: 'Trail', eod: 'EOD' };
+
+let ROWS = [], SORT = { key: 'closed_at', dir: 'desc' }, PAGE = 0;
+
+/* ── HELPERS ─────────────────────────────────────────────── */
+const esc = s => String(s).replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+const money = n => (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-US',
+  { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const price = n => (n === null || n === undefined || n === '')
+  ? '—'
+  : Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const fmtDate = iso => {
+  const d = new Date(iso);
+  if (isNaN(d)) return '—';
+  return d.toLocaleDateString('en-US', { year: '2-digit', month: 'short', day: '2-digit' });
+};
+const fmtDateTime = iso => {
+  const d = new Date(iso);
+  if (isNaN(d)) return '—';
+  return d.toLocaleString('en-US', {
+    year: 'numeric', month: 'short', day: '2-digit',
+    hour: '2-digit', minute: '2-digit'
+  });
+};
+
+const strategyLabel = s => s ? (STRATEGY_LABELS[s] || s.replace(/_/g, ' ')) : '—';
+const reasonLabel   = r => r ? (REASON_LABELS[r] || r.replace(/_/g, ' ')) : null;
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+/* ── DATA LOAD ───────────────────────────────────────────── */
+async function loadSignals(force) {
+  hide('errorBox'); hide('emptyBox'); show('statsLoading');
+
+  if (!force) {
+    try {
+      const c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (c && Date.now() - c.at < CACHE_MS && Array.isArray(c.rows)) {
+        render(c.rows);
+        return;
+      }
+    } catch (e) { /* cache unavailable — fall through to network */ }
+  }
+
+  const cols = 'ts,closed_at,symbol,strategy,entry,exit_price,pnl,close_reason';
+  const url  = SUPABASE_URL + '/rest/v1/signals'
+             + '?select='   + cols
+             + '&status=eq.closed'
+             + '&closed_at=not.is.null'
+             + '&order=closed_at.asc'
+             + '&limit=1000';
+
+  try {
+    const res = await fetch(url, {
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY },
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows)) throw new Error('Unexpected response shape');
+
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), rows }));
+    } catch (e) { /* storage full or blocked — non-fatal */ }
+
+    render(rows);
+  } catch (err) {
+    hide('statsLoading');
+    document.getElementById('dataAsOf').textContent = '';
+    document.getElementById('errorMsg').textContent =
+      '◗ COULD NOT LOAD SIGNAL DATA — ' + String(err.message || err).toUpperCase();
+    show('errorBox');
+  }
+}
+
+/* ── RENDER ──────────────────────────────────────────────── */
+function render(rows) {
+  hide('statsLoading');
+
+  // Defensive: enforce the same filters client-side.
+  ROWS = rows.filter(r => r && r.closed_at && r.pnl !== null && r.pnl !== undefined)
+             .map(r => ({ ...r, pnl: Number(r.pnl) }))
+             .filter(r => !isNaN(r.pnl));
+
+  if (!ROWS.length) {
+    document.getElementById('dataAsOf').textContent = '';
+    show('emptyBox');
+    return;
+  }
+
+  const sorted  = [...ROWS].sort((a, b) => new Date(a.closed_at) - new Date(b.closed_at));
+  const latest  = sorted[sorted.length - 1].closed_at;
+  const earliest= sorted[0].closed_at;
+
+  document.getElementById('dataAsOf').textContent =
+    'UPDATED ' + fmtDateTime(latest).toUpperCase();
+
+  const badge = document.getElementById('sampleBadge');
+  if (ROWS.length < SMALL_SAMPLE) {
+    badge.textContent = 'SMALL SAMPLE — ' + ROWS.length + ' SIGNALS';
+    badge.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+  }
+
+  renderStats(sorted, earliest, latest);
+  renderChart(sorted);
+  renderTable();
+  renderStrategies();
+
+  show('statsGrid'); show('chartSection'); show('tableSection');
+  show('strategySection'); show('methodSection');
+}
+
+function renderStats(sorted, earliest, latest) {
+  const n         = sorted.length;
+  const wins      = sorted.filter(r => r.pnl > 0);
+  const losses    = sorted.filter(r => r.pnl < 0);
+  const total     = sorted.reduce((s, r) => s + r.pnl, 0);
+  const grossWin  = wins.reduce((s, r) => s + r.pnl, 0);
+  const grossLoss = Math.abs(losses.reduce((s, r) => s + r.pnl, 0));
+  const winRate   = (wins.length / n) * 100;
+  const avgWin    = wins.length   ? grossWin  / wins.length   : 0;
+  const avgLoss   = losses.length ? grossLoss / losses.length : 0;
+  const pf        = grossLoss > 0 ? grossWin / grossLoss : null;
+  const maxWin    = n ? Math.max(...sorted.map(r => r.pnl)) : 0;
+  const maxLoss   = n ? Math.min(...sorted.map(r => r.pnl)) : 0;
+
+  const cards = [
+    { v: String(n),                       l: 'Signals Closed' },
+    { v: winRate.toFixed(1) + '<span>%</span>', l: 'Win Rate',
+      note: wins.length + 'W / ' + losses.length + 'L' },
+    { v: money(total), l: 'Total P&L (Simulated)', cls: total >= 0 ? 'green' : 'red',
+      note: 'per 1 micro contract' },
+    { v: pf === null ? '—' : pf.toFixed(2), l: 'Profit Factor',
+      note: 'gross win ÷ gross loss' },
+    { v: money(avgWin),  l: 'Average Win',  cls: 'green' },
+    { v: money(-avgLoss), l: 'Average Loss', cls: 'red' },
+    { v: money(maxWin),  l: 'Largest Win',  cls: 'green' },
+    { v: money(maxLoss), l: 'Largest Loss', cls: 'red' }
+  ];
+
+  document.getElementById('statsGrid').innerHTML = cards.map(c => `
+    <div class="stat-card">
+      <div class="stat-val ${c.cls || ''}">${c.v}</div>
+      <div class="stat-label">${esc(c.l)}</div>
+      ${c.note ? `<div class="stat-note">${esc(c.note)}</div>` : ''}
+    </div>`).join('') + `
+    <div class="stat-card" style="grid-column:1/-1">
+      <div class="stat-val" style="font-size:20px">
+        ${fmtDate(earliest)} <span>→</span> ${fmtDate(latest)}
+      </div>
+      <div class="stat-label">Date Range Covered</div>
+      <div class="stat-note">All figures on this page are simulated, not broker-confirmed.</div>
+    </div>`;
+}
+
+/* ── EQUITY CURVE (inline SVG, no dependencies) ──────────── */
+function renderChart(sorted) {
+  const W = 1100, H = 320, P = { t: 16, r: 18, b: 30, l: 62 };
+  let cum = 0;
+  const pts = sorted.map((r, i) => { cum += r.pnl; return { i, y: cum, t: r.closed_at }; });
+
+  const ys   = pts.map(p => p.y).concat([0]);
+  let yMin   = Math.min(...ys), yMax = Math.max(...ys);
+  const padY = (yMax - yMin) * 0.12 || 10;
+  yMin -= padY; yMax += padY;
+
+  const iw = W - P.l - P.r, ih = H - P.t - P.b;
+  const sx = i => P.l + (pts.length <= 1 ? iw / 2 : (i / (pts.length - 1)) * iw);
+  const sy = v => P.t + ih - ((v - yMin) / (yMax - yMin)) * ih;
+
+  const TICKS = 5;
+  let grid = '', labels = '';
+  for (let k = 0; k <= TICKS; k++) {
+    const v = yMin + (k / TICKS) * (yMax - yMin);
+    const y = sy(v);
+    grid   += `<line class="grid" x1="${P.l}" y1="${y.toFixed(1)}" x2="${W - P.r}" y2="${y.toFixed(1)}"/>`;
+    labels += `<text x="${P.l - 10}" y="${(y + 3.5).toFixed(1)}" text-anchor="end">${money(v).replace('.00','')}</text>`;
+  }
+
+  const zeroY = (0 >= yMin && 0 <= yMax)
+    ? `<line class="zero" x1="${P.l}" y1="${sy(0).toFixed(1)}" x2="${W - P.r}" y2="${sy(0).toFixed(1)}"/>` : '';
+
+  const line = pts.map((p, i) => (i ? 'L' : 'M') + sx(p.i).toFixed(1) + ' ' + sy(p.y).toFixed(1)).join(' ');
+  const base = sy(Math.max(yMin, Math.min(0, yMax)));
+  const area = line + ` L ${sx(pts[pts.length-1].i).toFixed(1)} ${base.toFixed(1)}`
+                    + ` L ${sx(0).toFixed(1)} ${base.toFixed(1)} Z`;
+
+  const first = sorted[0].closed_at, last = sorted[sorted.length - 1].closed_at;
+  const mid   = sorted[Math.floor((sorted.length - 1) / 2)].closed_at;
+  const xLabels =
+      `<text x="${P.l}" y="${H - 8}" text-anchor="start">${fmtDate(first)}</text>`
+    + (sorted.length > 2 ? `<text x="${(P.l + iw/2).toFixed(1)}" y="${H - 8}" text-anchor="middle">${fmtDate(mid)}</text>` : '')
+    + `<text x="${W - P.r}" y="${H - 8}" text-anchor="end">${fmtDate(last)}</text>`;
+
+  document.getElementById('equityChart').innerHTML = `
+    <svg class="equity" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-label="Cumulative simulated profit and loss in dollars over time">
+      <defs>
+        <linearGradient id="eqfill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stop-color="#00d4ff" stop-opacity=".22"/>
+          <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      ${grid}${zeroY}
+      <path class="area"  d="${area}"/>
+      <path class="curve" d="${line}"/>
+      ${labels}${xLabels}
+    </svg>`;
+}
+
+/* ── SIGNAL TABLE ────────────────────────────────────────── */
+function sortedRows() {
+  const { key, dir } = SORT, m = dir === 'asc' ? 1 : -1;
+  return [...ROWS].sort((a, b) => {
+    const av = key === 'pnl' ? a.pnl : new Date(a.closed_at).getTime();
+    const bv = key === 'pnl' ? b.pnl : new Date(b.closed_at).getTime();
+    return (av - bv) * m;
+  });
+}
+
+function renderTable() {
+  const rows       = sortedRows();
+  const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  PAGE = Math.min(PAGE, totalPages - 1);
+  const start = PAGE * PAGE_SIZE;
+  const slice = rows.slice(start, start + PAGE_SIZE);
+
+  document.getElementById('signalBody').innerHTML = slice.map(r => {
+    const reason = reasonLabel(r.close_reason);
+    return `<tr>
+      <td class="mono">${fmtDate(r.closed_at)}</td>
+      <td class="mono">${esc(r.symbol || '—')}</td>
+      <td>${esc(strategyLabel(r.strategy))}</td>
+      <td class="num mono">${price(r.entry)}</td>
+      <td class="num mono">${price(r.exit_price)}</td>
+      <td class="num mono ${r.pnl > 0 ? 'pnl-pos' : r.pnl < 0 ? 'pnl-neg' : ''}">${money(r.pnl)}</td>
+      <td class="${reason ? 'mono' : 'mono nulled'}">${reason ? esc(reason) : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  const pageTotal = slice.reduce((s, r) => s + r.pnl, 0);
+  const allTotal  = ROWS.reduce((s, r) => s + r.pnl, 0);
+  document.getElementById('signalFoot').innerHTML = `
+    <tr>
+      <td colspan="5">PAGE TOTAL (${slice.length} SIGNALS)</td>
+      <td class="num" style="color:${pageTotal >= 0 ? 'var(--green)' : 'var(--red)'}">${money(pageTotal)}</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="5">ALL SIGNALS (${ROWS.length})</td>
+      <td class="num" style="color:${allTotal >= 0 ? 'var(--green)' : 'var(--red)'}">${money(allTotal)}</td>
+      <td></td>
+    </tr>`;
+
+  document.getElementById('pagerInfo').textContent =
+    `SHOWING ${start + 1}–${start + slice.length} OF ${rows.length}  ·  PAGE ${PAGE + 1}/${totalPages}`;
+  document.getElementById('prevBtn').disabled = PAGE === 0;
+  document.getElementById('nextBtn').disabled = PAGE >= totalPages - 1;
+}
+
+function changePage(d) {
+  PAGE += d;
+  renderTable();
+  document.getElementById('tableSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('th.sortable').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    SORT = { key, dir: SORT.key === key && SORT.dir === 'desc' ? 'asc' : 'desc' };
+    document.querySelectorAll('th.sortable').forEach(o => o.classList.remove('asc', 'desc'));
+    th.classList.add(SORT.dir);
+    PAGE = 0;
+    renderTable();
+  });
+});
+
+/* ── STRATEGY BREAKDOWN ──────────────────────────────────── */
+function renderStrategies() {
+  const map = new Map();
+  ROWS.forEach(r => {
+    const k = r.strategy || '(unattributed)';
+    if (!map.has(k)) map.set(k, { n: 0, w: 0, pnl: 0 });
+    const g = map.get(k);
+    g.n++; if (r.pnl > 0) g.w++; g.pnl += r.pnl;
+  });
+
+  const list = [...map.entries()].sort((a, b) => b[1].pnl - a[1].pnl);
+  document.getElementById('strategyBody').innerHTML = list.map(([k, g]) => `
+    <tr>
+      <td>${esc(strategyLabel(k === '(unattributed)' ? null : k))}</td>
+      <td class="num mono">${g.n}</td>
+      <td class="num mono">${((g.w / g.n) * 100).toFixed(1)}%</td>
+      <td class="num mono ${g.pnl > 0 ? 'pnl-pos' : g.pnl < 0 ? 'pnl-neg' : ''}">${money(g.pnl)}</td>
+    </tr>`).join('');
+}
+
+loadSignals(false);
+</script>
+
+</body>
+</html>
