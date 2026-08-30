@@ -1,14 +1,1 @@
-{
-  "cleanUrls": true,
-  "headers": [
-    {
-      "source": "/signal-performance",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600"
-        }
-      ]
-    }
-  ]
-}
+{"cleanUrls": true, "redirects": [{"source": "/FuturesForgedCopier.exe", "destination": "https://get.futuresforged.com/FuturesForged.exe", "statusCode": 302}], "headers": [{"source": "/signal-performance", "headers": [{"key": "Cache-Control", "value": "public, max-age=0, s-maxage=300, stale-while-revalidate=600"}]}]}
