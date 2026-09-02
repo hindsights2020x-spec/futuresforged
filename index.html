@@ -880,14 +880,14 @@ footer {
       <p style="font-size:15px;color:var(--text2);max-width:640px;margin:0 auto;">
         The engine is running live in beta and generating signals every session. Every one is
         published to the <a href="/signal-performance" style="color:var(--accent);">Signal Performance</a>
-        page as it closes &mdash; wins and losses both. A public release date will be announced here;
-        founding pricing is held for everyone on the list until then.
+        page as it closes &mdash; wins and losses both. Founding pricing is live now and
+        held for as long as you stay subscribed.
       </p>
     </div>
 
     <div class="hero-actions">
       <a href="/signal-performance" class="btn-primary">See Live Signal Performance →</a>
-      <a href="#preorder" class="btn-secondary">Pre-Order Founding Price</a>
+      <a href="#pricing" class="btn-secondary">View Pricing</a>
     </div>
     <!-- Hero stat cards removed 2026-08-28. They showed backtest figures
          (4.14 OOS PF, 78% walk-forward WR) one click from the live page's
@@ -1093,18 +1093,18 @@ footer {
 <section class="preorder" id="preorder" style="padding:100px 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div class="wrap" style="max-width:760px;text-align:center;">
     <div class="section-label" style="text-align:center;">// FOUNDING ACCESS</div>
-    <h2 class="section-title" style="text-align:center;">Founding pricing,<br>held for you.</h2>
-    <p class="section-sub" style="margin-left:auto;margin-right:auto;">FuturesForged is in active testing ahead of general release. Reserve founding pricing now &mdash; you won't be charged, and we'll email you as soon as a public release date is set.</p>
+    <h2 class="section-title" style="text-align:center;">Not ready yet?<br>Stay on the list.</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto;">Founding pricing is live now &mdash; you can <a href="#pricing" style="color:var(--accent)">subscribe today</a>. Not ready? Leave your email and we'll send release notes, new strategies, and a heads-up before founding pricing ends.</p>
 
     <!-- Pre-order form -->
     <form id="preorder-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:520px;margin:0 auto;" novalidate>
       <input type="email" id="preorder-email" required placeholder="you@email.com" autocomplete="email"
         style="flex:1;min-width:240px;background:var(--bg3);border:1px solid var(--border2);color:var(--white);font-family:var(--mono);font-size:14px;padding:14px 16px;border-radius:4px;">
-      <button type="submit" class="btn-primary" style="white-space:nowrap;">PRE-ORDER — LOCK FOUNDING PRICE</button>
+      <button type="submit" class="btn-primary" style="white-space:nowrap;">KEEP ME POSTED</button>
     </form>
-    <div id="preorder-confirm" style="display:none;margin-top:20px;font-family:var(--mono);font-size:13px;letter-spacing:1px;color:var(--green);">✓ You're on the founding list. We'll email you as soon as a release date is set.</div>
+    <div id="preorder-confirm" style="display:none;margin-top:20px;font-family:var(--mono);font-size:13px;letter-spacing:1px;color:var(--green);">✓ You're on the list. We'll keep you posted.</div>
     <div id="preorder-error" style="display:none;margin-top:14px;font-family:var(--mono);font-size:12px;letter-spacing:1px;color:var(--red);">Please enter a valid email address.</div>
-    <p style="font-size:12px;color:var(--text3);margin-top:18px;">Public release date to be announced · Founding pricing held until then</p>
+    <p style="font-size:12px;color:var(--text3);margin-top:18px;">No spam · Unsubscribe any time · Founding pricing available now on the <a href="#pricing" style="color:var(--accent)">pricing</a> section</p>
   </div>
 </section>
 
@@ -1133,7 +1133,7 @@ footer {
           <li><span class="check">&#10003;</span> Your account limits enforced on every order</li>
           <li><span class="check">&#10003;</span> Real-time dashboard</li>
         </ul>
-        <a href="#preorder" class="btn-plan btn-plan-pro">Reserve founding price</a>
+        <a href="https://buy.stripe.com/7sY8wPc2y5l17LFf0c08g02" class="btn-plan btn-plan-pro" rel="noopener">Subscribe &mdash; $99/mo</a>
       </div>
 
       <!-- DESK -->
@@ -1157,12 +1157,12 @@ footer {
           <li><span class="check">&#10003;</span> Regime scanner</li>
           <li><span class="check">&#10003;</span> Direct support</li>
         </ul>
-        <a href="#preorder" class="btn-plan btn-plan-basic">Reserve founding price</a>
+        <a href="https://buy.stripe.com/fZu28r8Qm4gXfe7f0c08g03" class="btn-plan btn-plan-basic" rel="noopener">Subscribe &mdash; $199/mo</a>
       </div>
 
     </div>
     <p style="text-align:center;font-size:13px;color:var(--text3);margin-top:24px">
-      Stripe checkout activating shortly &mdash; email <a href="mailto:support@futuresforged.com" style="color:var(--accent)">support@futuresforged.com</a> to pre-order today.<br>30-day money back guarantee. License tied to one machine per subscription.
+      Secure checkout by Stripe &mdash; cancel any time from your billing portal.<br>30-day money back guarantee. License tied to one machine per subscription.<br>Questions? <a href="mailto:support@futuresforged.com" style="color:var(--accent)">support@futuresforged.com</a>
     </p>
   </div>
 </section>
@@ -1307,7 +1307,7 @@ footer {
     <p>Join traders already running FuturesForged on funded accounts.</p>
     <div class="hero-actions" style="justify-content:center">
       <a href="/signal-performance" class="btn-primary">See the signal record</a>
-      <a href="#preorder" class="btn-secondary">Reserve founding price</a>
+      <a href="#pricing" class="btn-secondary">View pricing</a>
     </div>
   </div>
 </section>
@@ -1615,11 +1615,6 @@ function downloadToken() {
   link.click();
 }
 
-</script>
-<script>
-function ffSoon(e){ if(e) e.preventDefault();
-  alert("Card checkout is activating shortly. To get started today, email support@futuresforged.com and we'll set you up.");
-}
 </script>
 </body>
 </html>
