@@ -1371,21 +1371,14 @@ footer {
     <div style="font-size:9px;color:#4a7a9b;letter-spacing:1px;margin-bottom:20px;" id="token-id">TOKEN #001</div>
 
     <p style="font-size:13px;color:#c8dae8;line-height:1.8;margin-bottom:24px;">
-      Anyone who reads the fine print deserves a reward.<br>Here's <strong style="color:#22d08a;">$50 off your first month</strong> — on us.
+      Anyone who reads the fine print deserves a reward.<br>Here's a <strong style="color:#22d08a;">founding token</strong> — yours to keep.
     </p>
 
-    <div style="background:#060d14;border:1px dashed rgba(0,212,255,.3);padding:16px 24px;margin-bottom:24px;">
-      <div style="font-size:10px;letter-spacing:2px;color:#4a7a9b;margin-bottom:6px;">YOUR DISCOUNT CODE</div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:28px;color:#f0a500;letter-spacing:4px;">ROME50</div>
-      <div style="font-size:10px;color:#4a7a9b;margin-top:6px;">Apply at checkout · First month only · One per customer</div>
-    </div>
 
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <button onclick="copyCode()" style="background:transparent;border:2px solid #00d4ff;color:#00d4ff;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;padding:12px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#00d4ff';this.style.color='#060d14'" onmouseout="this.style.background='transparent';this.style.color='#00d4ff'">COPY CODE</button>
       <button onclick="downloadToken()" style="background:transparent;border:2px solid #f0a500;color:#f0a500;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;padding:12px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#f0a500';this.style.color='#060d14'" onmouseout="this.style.background='transparent';this.style.color='#f0a500'">SAVE TOKEN</button>
       <button onclick="closeEasterEgg()" style="background:transparent;border:1px solid #0e2a3a;color:#4a7a9b;font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:2px;padding:12px 24px;cursor:pointer;">CLOSE</button>
     </div>
-    <div id="copy-confirm" style="font-size:10px;color:#22d08a;margin-top:14px;display:none;letter-spacing:1px;">✓ Copied to clipboard</div>
 
     <!-- IT'S COMING -->
     <div style="margin-top:32px;border-top:1px solid rgba(255,255,255,.04);padding-top:24px;">
@@ -1471,12 +1464,6 @@ function showEasterEgg() {
 }
 function closeEasterEgg() {
   document.getElementById("easter-modal").style.display = "none";
-}
-function copyCode() {
-  navigator.clipboard.writeText("ROME50").then(() => {
-    document.getElementById("copy-confirm").style.display = "block";
-    setTimeout(() => { document.getElementById("copy-confirm").style.display = "none"; }, 2500);
-  });
 }
 
 // ── IT'S COMING ─────────────────────────────────────────────
