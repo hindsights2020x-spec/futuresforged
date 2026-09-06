@@ -1257,6 +1257,249 @@ footer {
   </div>
 </section>
 
+<!-- AFFILIATE PROGRAM -->
+<style>
+  .aff-req { list-style:none; padding:0; margin:0 0 34px; display:grid; gap:10px; }
+  .aff-req li { position:relative; padding-left:26px; font-size:14px; color:var(--text); line-height:1.6; }
+  .aff-req li::before { content:"›"; position:absolute; left:8px; top:-1px; color:var(--accent); font-family:var(--mono); }
+  .aff-form { display:grid; gap:14px; }
+  .aff-row { display:grid; gap:14px; grid-template-columns:1fr 1fr; }
+  @media (max-width:640px){ .aff-row { grid-template-columns:1fr; } }
+  .aff-field label {
+    display:block; font-family:var(--mono); font-size:11px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--text); margin-bottom:7px;
+  }
+  .aff-field input, .aff-field select, .aff-field textarea {
+    width:100%; background:var(--bg3, #0a1420); border:1px solid var(--border2, var(--border));
+    color:var(--white); font-family:var(--mono); font-size:14px; padding:13px 15px;
+    border-radius:4px; box-sizing:border-box;
+  }
+  .aff-field textarea { min-height:110px; resize:vertical; line-height:1.55; }
+  .aff-field input:focus, .aff-field select:focus, .aff-field textarea:focus {
+    outline:none; border-color:var(--accent);
+  }
+  .aff-check { display:flex; gap:12px; align-items:flex-start; margin-top:4px; }
+  .aff-check input { margin-top:3px; width:16px; height:16px; accent-color:var(--accent); flex:0 0 auto; }
+  .aff-check span { font-size:13px; color:var(--text); line-height:1.6; }
+  .aff-note { font-size:12px; color:var(--text3, var(--text)); margin-top:16px; }
+  .aff-msg { display:none; margin-top:18px; font-family:var(--mono); font-size:13px; letter-spacing:1px; }
+</style>
+
+<section class="affiliates" id="affiliates"
+         style="padding:100px 0;border-top:1px solid var(--border);">
+  <div class="wrap" style="max-width:820px;">
+    <div class="section-label">// PARTNER PROGRAM</div>
+    <h2 class="section-title">Affiliates, by approval only</h2>
+    <p class="section-sub">
+      We pay a recurring commission on every subscriber you send. We also review every
+      application by hand. Automated trading is a regulated category — an affiliate who
+      promises profits creates a problem for both of us, so the roster stays small and
+      the standard stays high.
+    </p>
+
+    <ul class="aff-req">
+      <li>25% recurring commission for 12 months on every active subscription you refer.</li>
+      <li>90-day attribution window, first-touch, tracked from your unique link.</li>
+      <li>You trade, or you serve traders. We look at your actual audience, not a follower count.</li>
+      <li>No income claims, no guaranteed returns, no fabricated track records — ever.</li>
+      <li>Applications are reviewed weekly. Approved partners get a code, a link and a stats login.</li>
+    </ul>
+
+    <form id="aff-form" class="aff-form" novalidate>
+      <div class="aff-row">
+        <div class="aff-field">
+          <label for="aff-name">Full name</label>
+          <input id="aff-name" type="text" required autocomplete="name" placeholder="Jane Doe">
+        </div>
+        <div class="aff-field">
+          <label for="aff-email">Email</label>
+          <input id="aff-email" type="email" required autocomplete="email" placeholder="you@email.com">
+        </div>
+      </div>
+
+      <div class="aff-row">
+        <div class="aff-field">
+          <label for="aff-platform">Where you'd promote</label>
+          <select id="aff-platform" required>
+            <option value="">Select one</option>
+            <option value="youtube">YouTube</option>
+            <option value="x">X / Twitter</option>
+            <option value="discord">Discord community</option>
+            <option value="newsletter">Newsletter</option>
+            <option value="podcast">Podcast</option>
+            <option value="prop_firm">Prop firm / trading room</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="aff-field">
+          <label for="aff-size">Audience size</label>
+          <select id="aff-size">
+            <option value="">Select one</option>
+            <option value="under_1k">Under 1,000</option>
+            <option value="1k_10k">1,000 &ndash; 10,000</option>
+            <option value="10k_50k">10,000 &ndash; 50,000</option>
+            <option value="50k_plus">50,000+</option>
+            <option value="private">Private list / 1-to-1</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="aff-field">
+        <label for="aff-url">Link to your channel, community or list</label>
+        <input id="aff-url" type="url" required placeholder="https://">
+      </div>
+
+      <div class="aff-field">
+        <label for="aff-background">Your futures trading background</label>
+        <input id="aff-background" type="text" placeholder="e.g. 4 years trading MNQ, prop funded since 2024">
+      </div>
+
+      <div class="aff-field">
+        <label for="aff-plan">How would you introduce FuturesForged to your audience?</label>
+        <textarea id="aff-plan" required
+          placeholder="Be specific. A walkthrough video, a review after running it live, a mention in your Sunday newsletter — whatever you'd actually do."></textarea>
+      </div>
+
+      <label class="aff-check">
+        <input type="checkbox" id="aff-ack" required>
+        <span>I will disclose the affiliate relationship, and I will not make income,
+              profit or performance guarantees on behalf of FuturesForged.</span>
+      </label>
+
+      <div>
+        <button type="submit" class="btn-primary" id="aff-submit" style="margin-top:10px;">Send application</button>
+      </div>
+    </form>
+
+    <div class="aff-msg" id="aff-ok" style="color:var(--green);">
+      ✓ Application received. We review weekly and reply either way.
+    </div>
+    <div class="aff-msg" id="aff-err" style="color:var(--red);"></div>
+
+    <p class="aff-note">
+      Commission is paid on collected subscription revenue after the refund window.
+      Referrals of yourself, your own accounts, or paid search on our brand terms don't qualify.
+    </p>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   FuturesForged affiliate tracking + application capture
+   SUPABASE_ANON_KEY below is the project's publishable key —
+   safe in the page, RLS allows insert-only on two tables.
+   ============================================================ */
+(function () {
+  const SUPABASE_URL      = "https://osxwkgmjwtdyvqwlfyre.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_6Rz0VGoqTeBzVwNMs0vcCg_ev34l8kb";
+  const COOKIE_DAYS       = 90;
+
+  const api = (table, body) => fetch(SUPABASE_URL + "/rest/v1/" + table, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal"
+    },
+    body: JSON.stringify(body)
+  });
+
+  /* ---- visitor id ---- */
+  let vid = localStorage.getItem("ff_vid");
+  if (!vid) {
+    vid = (crypto.randomUUID ? crypto.randomUUID()
+      : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+          const r = Math.random()*16|0; return (c === "x" ? r : (r&0x3|0x8)).toString(16);
+        }));
+    localStorage.setItem("ff_vid", vid);
+  }
+
+  /* ---- capture ?ref= (first touch wins for the full window) ---- */
+  const param  = new URLSearchParams(location.search).get("ref");
+  const stored = JSON.parse(localStorage.getItem("ff_ref") || "null");
+  const fresh  = stored && (Date.now() - stored.t) < COOKIE_DAYS * 864e5;
+
+  if (param && /^[A-Za-z0-9_-]{3,24}$/.test(param) && !fresh) {
+    localStorage.setItem("ff_ref", JSON.stringify({ code: param, t: Date.now() }));
+  }
+  const active  = JSON.parse(localStorage.getItem("ff_ref") || "null");
+  const refCode = active && (Date.now() - active.t) < COOKIE_DAYS * 864e5 ? active.code : null;
+  window.FF_REF = refCode;
+
+  /* ---- log the click once per landing with a ref present ---- */
+  if (param && refCode) {
+    api("affiliate_clicks", {
+      code: refCode, visitor_id: vid,
+      landing_path: location.pathname, referrer: document.referrer || null,
+      user_agent: navigator.userAgent
+    }).catch(() => {});
+  }
+
+  /* ---- carry the code into Stripe checkout for attribution ---- */
+  if (refCode) {
+    document.addEventListener("click", e => {
+      const a = e.target.closest('a[href*="stripe.com"], a[href*="checkout"]');
+      if (!a) return;
+      try {
+        const u = new URL(a.href, location.origin);
+        if (!u.searchParams.get("client_reference_id")) {
+          u.searchParams.set("client_reference_id", "aff_" + refCode + "_" + vid);
+          a.href = u.toString();
+        }
+      } catch (_) {}
+    }, true);
+  }
+
+  /* ---- application form ---- */
+  const form = document.getElementById("aff-form");
+  if (!form) return;
+  const ok   = document.getElementById("aff-ok");
+  const err  = document.getElementById("aff-err");
+  const btn  = document.getElementById("aff-submit");
+  const val  = id => (document.getElementById(id).value || "").trim();
+
+  const fail = msg => { err.textContent = msg; err.style.display = "block"; ok.style.display = "none"; };
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    err.style.display = "none";
+
+    if (val("aff-name").length < 2) return fail("Add your full name.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val("aff-email"))) return fail("That email doesn't look right.");
+    if (!val("aff-platform")) return fail("Pick where you'd promote.");
+    if (!/^https?:\/\/.+\..+/.test(val("aff-url"))) return fail("Add a full link to your channel or community, starting with https://");
+    if (val("aff-plan").length < 40) return fail("Tell us a little more about how you'd introduce it — a sentence or two.");
+    if (!document.getElementById("aff-ack").checked) return fail("Please confirm the disclosure and no-guarantees terms.");
+
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+
+    try {
+      const res = await api("affiliate_applications", {
+        full_name:          val("aff-name"),
+        email:              val("aff-email"),
+        platform:           val("aff-platform"),
+        audience_size:      val("aff-size") || null,
+        audience_url:       val("aff-url"),
+        trading_background: val("aff-background") || null,
+        promo_plan:         val("aff-plan"),
+        compliance_ack:     true,
+        source_ref:         window.FF_REF || null,
+        user_agent:         navigator.userAgent
+      });
+      if (!res.ok) throw new Error(res.status);
+      form.style.display = "none";
+      ok.style.display = "block";
+    } catch (_) {
+      btn.disabled = false;
+      btn.textContent = "Send application";
+      fail("That didn't go through. Email partners@futuresforged.com and we'll take it from there.");
+    }
+  });
+})();
+</script>
+
 <!-- FAQ -->
 <section class="faq" id="faq">
   <div class="wrap">
@@ -1327,6 +1570,7 @@ footer {
           <li><a href="#strategies">Strategies</a></li>
           <li><a href="#firms">Compatibility</a></li>
           <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#affiliates">Affiliates</a></li>
         </ul>
       </div>
       <div class="footer-links">

@@ -1,0 +1,9 @@
+{
+  "name": "futuresforged-site",
+  "private": true,
+  "type": "module",
+  "description": "futuresforged.com — static site plus the affiliate Stripe webhook in /api.",
+  "dependencies": {
+    "stripe": "^18.5.0"
+  }
+}
