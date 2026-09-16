@@ -23,6 +23,27 @@ const sb = (path, opts = {}) =>
     }
   });
 
+// A write we did not confirm is not a write.
+//
+// Every sb() call used to be awaited and then ignored, and the handler
+// returned {received:true} regardless. So an insert refused by PostgREST — a
+// rotated key, a schema change, a network blip — was reported to Stripe as
+// success, Stripe marked the event delivered, and it never retried. The
+// commission was gone with nothing anywhere saying so.
+//
+// Throwing here lands in the handler's catch, which returns 500, which is
+// Stripe's signal to retry with backoff for up to 3 days. A duplicate on the
+// retry is harmless: stripe_invoice_id is unique and the insert uses
+// resolution=ignore-duplicates.
+async function sbOrThrow(path, opts = {}, what = "supabase write") {
+  const r = await sb(path, opts);
+  if (!r.ok) {
+    const body = await r.text().catch(() => "");
+    throw new Error(`${what} failed: ${r.status} ${body.slice(0, 300)}`);
+  }
+  return r;
+}
+
 // client_reference_id format written by the site: aff_<CODE>_<visitorId>
 const parseRef = (ref) => {
   const m = /^aff_([A-Za-z0-9_-]{3,24})_(.+)$/.exec(ref || "");
@@ -38,9 +59,18 @@ const invoiceSubscriptionId = (inv) => {
 };
 
 async function getAffiliate(code) {
-  const r = await sb(`affiliates?code=ilike.${encodeURIComponent(code)}&status=eq.active&select=*`);
+  // `_` is a single-character wildcard in ILIKE, and parseRef deliberately
+  // allows `_` in a code. So `ab_` matched `abc`, `abX`, `ab9` — an affiliate
+  // could pick a code that harvests someone else's attribution. Escaping the
+  // wildcards fixes the query; re-checking the returned code in JS means an
+  // over-match can never be ACTED on even if the escaping is ever wrong.
+  const escaped = code.replace(/([%_])/g, "\\$1");
+  const r = await sbOrThrow(
+    `affiliates?code=ilike.${encodeURIComponent(escaped)}&status=eq.active&select=*`,
+    {}, "affiliate lookup");
   const rows = await r.json();
-  return rows[0] || null;
+  const want = String(code).toLowerCase();
+  return rows.find((a) => String(a.code).toLowerCase() === want) || null;
 }
 
 async function readRaw(req) {
@@ -88,6 +118,14 @@ export default async function handler(req, res) {
 
       if (code) {
         const aff = await getAffiliate(code);
+        if (!aff) {
+          // The subscription carries a code but no active affiliate answers to
+          // it — deactivated, renamed, deleted. Silently skipping loses a real
+          // commission with no trace, so say it out loud.
+          console.error(
+            `affiliate webhook: subscription ${subId} is stamped with code ` +
+            `"${code}" but no ACTIVE affiliate matches; invoice ${inv.id} not credited`);
+        }
         if (aff) {
           const start = new Date(sub.start_date * 1000);
           const monthsIn = (Date.now() - start) / 2629800000;
@@ -95,7 +133,24 @@ export default async function handler(req, res) {
 
           if (withinWindow) {
             const gross = inv.amount_paid || 0;
-            await sb("affiliate_conversions", {
+            // A commission we cannot compute is not a commission of zero.
+            //
+            // Note Number(null) === 0, NOT NaN — so a null commission_rate
+            // sails through a Number.isFinite check and books the conversion
+            // at nothing. That is precisely the silent-zero this guard exists
+            // to stop, and the first cut of it had the bug. The absent values
+            // are therefore rejected explicitly, and a rate of exactly 0 is
+            // refused too: a 0% affiliate is a misconfiguration, not a deal.
+            const raw = aff.commission_rate;
+            const rate = Number(raw);
+            if (raw === null || raw === undefined || raw === "" ||
+                !Number.isFinite(rate) || rate <= 0 || rate > 1) {
+              throw new Error(
+                `affiliate ${aff.code} has an unusable commission_rate ` +
+                `(${JSON.stringify(aff.commission_rate)}); refusing to book ` +
+                `invoice ${inv.id} rather than book it at zero`);
+            }
+            await sbOrThrow("affiliate_conversions", {
               method: "POST",
               headers: { Prefer: "resolution=ignore-duplicates" },
               body: JSON.stringify({
@@ -108,7 +163,7 @@ export default async function handler(req, res) {
                 stripe_invoice_id: inv.id,                // unique — retries can't double-credit
                 plan: inv.lines?.data?.[0]?.description || null,
                 gross_cents: gross,
-                commission_cents: Math.round(gross * Number(aff.commission_rate)),
+                commission_cents: Math.round(gross * rate),
                 occurred_at: new Date(inv.created * 1000).toISOString(),
                 status: "pending"                          // you flip to 'approved' after the refund window
               })
@@ -122,10 +177,10 @@ export default async function handler(req, res) {
     if (event.type === "charge.refunded") {
       const invId = event.data.object.invoice;
       if (invId) {
-        await sb(`affiliate_conversions?stripe_invoice_id=eq.${invId}`, {
+        await sbOrThrow(`affiliate_conversions?stripe_invoice_id=eq.${invId}`, {
           method: "PATCH",
           body: JSON.stringify({ status: "refunded" })
-        });
+        }, "refund void");
       }
     }
 
