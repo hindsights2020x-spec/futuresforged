@@ -839,6 +839,46 @@ footer {
   padding: 2px 7px;
   margin-top: 6px;
 }
+
+/* ── SOCIAL BAR (frozen to bottom of viewport) ───────────── */
+body { padding-bottom: 44px; }
+.social-bar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  height: 44px;
+  border-top: 1px solid var(--border);
+  background: rgba(6,13,22,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.social-bar-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.social-bar-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--text3);
+}
+.social-bar a {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color .2s;
+}
+.social-bar a:hover, .social-bar a:focus-visible { color: var(--accent); }
+@media (max-width: 600px) {
+  .social-bar-label { display: none; }
+  .social-bar-inner { gap: 22px; }
+  .social-bar a { font-size: 11px; letter-spacing: 1.5px; }
+}
 </style>
 </head>
 
@@ -1600,6 +1640,16 @@ footer {
     </div>
   </div>
 </footer>
+
+<!-- SOCIAL BAR (frozen) -->
+<div class="social-bar" role="navigation" aria-label="FuturesForged on social media">
+  <div class="wrap social-bar-inner">
+    <span class="social-bar-label">FOLLOW</span>
+    <a href="https://www.youtube.com/@futuresforged1" target="_blank" rel="noopener">YOUTUBE</a>
+    <a href="https://www.tiktok.com/@futuresforged" target="_blank" rel="noopener">TIKTOK</a>
+    <a href="https://www.reddit.com/user/futuresforged" target="_blank" rel="noopener">REDDIT</a>
+  </div>
+</div>
 
 <!-- Easter Egg Modal -->
 <div id="easter-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;">
