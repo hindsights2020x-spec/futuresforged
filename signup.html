@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Create an account | FuturesForged</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/auth/auth.css">
+</head>
+<body>
+<nav><div class="nav-inner"><a class="logo" href="/">FUTURES<span>FORGED</span></a></div></nav>
+<main>
+<h1>Create an account</h1>
+<div class="card">
+<form id="form" novalidate>
+<label for="name">NAME</label>
+<input id="name" type="text" autocomplete="name" required>
+<label for="email">EMAIL</label>
+<input id="email" type="email" autocomplete="email" required>
+<label for="password">PASSWORD (8+ CHARACTERS)</label>
+<input id="password" type="password" autocomplete="new-password" minlength="8" required>
+<div class="check"><input id="ack" type="checkbox"><label for="ack" style="margin:0;font-family:var(--body);font-size:14px;letter-spacing:0;color:var(--text)">I understand that futures trading involves substantial risk of loss, that past performance (including backtested results) does not indicate future results, and that FuturesForged is software that does not guarantee profits.</label></div>
+<button id="submit" type="submit">CREATE ACCOUNT</button>
+</form>
+<div class="links"><a href="/portal">Already have an account? Sign in</a></div>
+<p id="msg" class="msg" role="status" aria-live="polite" hidden></p>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+<script src="/auth/ff-auth.js"></script>
+<script>FFAuth.boot("signup");</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Confirm | FuturesForged</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/auth/auth.css">
+</head>
+<body>
+<nav><div class="nav-inner"><a class="logo" href="/">FUTURES<span>FORGED</span></a></div></nav>
+<main>
+<h1>Confirm</h1>
+<div class="card">
+<p>Press the button to finish.</p>
+<button id="confirm" type="button" hidden>CONFIRM</button>
+<div id="resend" hidden>
+<form id="resend-form" novalidate>
+<label for="resend-email">SEND A NEW LINK TO</label>
+<input id="resend-email" type="email" autocomplete="email" required>
+<button type="submit" class="ghost">SEND A NEW ONE</button>
+</form>
+</div>
+<p id="msg" class="msg" role="status" aria-live="polite" hidden></p>
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+<script src="/auth/ff-auth.js"></script>
+<script>FFAuth.boot("confirm");</script>
+</body>
+</html>
