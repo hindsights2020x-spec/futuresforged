@@ -39,6 +39,8 @@
   var TEXT = {
     signinFailed: "That email and password did not match. Check them, or reset your password.",
     signupSent: "Check your email to confirm your account. If you do not see it in a few minutes, look in spam.",
+    signupFailed: "Could not create the account right now. Try again later, or email support@futuresforged.com.",
+    passwordFailed: "Could not set the password. Open the link from your reset email again, or email support@futuresforged.com.",
     signupClosed: "Sign-up opens soon. To join now, email support@futuresforged.com.",
     resetSent: "If that email has an account, a link is on its way. It works once and expires within an hour.",
     resendSent: "If that email has an account, a new link is on its way.",
@@ -56,6 +58,7 @@
   };
 
   var RECOVERY_FLAG = "ff_recovery_ok";
+  var SAME_AS_NEW = { user_already_exists: 1, email_exists: 1 };
   var CONFIRM_TYPES = { signup: 1, email: 1, email_change: 1, recovery: 1 };
 
   function client() {
@@ -150,11 +153,17 @@
         // With "Confirm email" ON, an existing email gets a fake user
         // (identities = []) and no error. The answer is never read for
         // that: every outcome shows the same text (WO 7788 C2).
-        await env.sb.auth.signUp({
+        // A server refusal (weak_password, over_email_send_rate_limit, ...)
+        // must not show "Check your email" (audit-win 7930 n1). An
+        // already-registered answer (only possible if "Confirm email" is
+        // ever turned off) keeps the new-account text, so no enumeration.
+        var r = await env.sb.auth.signUp({
           email: email,
           password: password,
           options: { emailRedirectTo: CONFIG.SITE + "/auth/confirm", data: { full_name: name } }
         });
+        var code = r && r.error ? String(r.error.code || "") : "";
+        if (r && r.error && !SAME_AS_NEW[code]) { say(env, TEXT.signupFailed, "err"); return; }
         env.doc.getElementById("form").hidden = true;
         say(env, TEXT.signupSent, "ok");
       } catch (e) {
@@ -260,7 +269,7 @@
       busy(env, true);
       try {
         var r = await env.sb.auth.updateUser({ password: p1 });
-        if (r.error) { say(env, r.error.message ? String(r.error.message) : TEXT.network, "err"); return; }
+        if (r.error) { say(env, TEXT.passwordFailed, "err"); return; }
         env.storage.removeItem(RECOVERY_FLAG);
         await env.sb.auth.signOut({ scope: "local" });
         form.hidden = true;
@@ -332,7 +341,10 @@
     manage.href = CONFIG.BILLING_PORTAL_URL || ("mailto:" + CONFIG.SUPPORT + "?subject=Manage%20my%20plan");
     d.getElementById("download").href = CONFIG.DOWNLOAD;
     d.getElementById("signout").addEventListener("click", async function () {
-      try { await env.sb.auth.signOut(); } catch (e) { /* local session goes anyway */ }
+      // scope "local": the supabase-js default ("global") revokes every
+      // refresh token of the user, signing the app out without
+      // release_my_machine (audit-win 7930 C1).
+      try { await env.sb.auth.signOut({ scope: "local" }); } catch (e) { /* local session goes anyway */ }
       env.nav("/portal");
     });
   }

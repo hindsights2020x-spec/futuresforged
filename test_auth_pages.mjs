@@ -150,6 +150,16 @@ async function doSignup(plan, fill) {
   check("existing email (fake user, identities = []) shows exactly the new-account text",
         r2.e.doc.getElementById("msg").textContent === newText);
 }
+for (const code of ["weak_password", "over_email_send_rate_limit", "unexpected_failure"]) {
+  const { FF, e } = await doSignup({ signUp: { data: { user: null }, error: { code, message: "x" } } });
+  check("signUp refused (" + code + ") → generic failure, form stays, not 'Check your email'",
+        e.doc.getElementById("msg").textContent === FF.TEXT.signupFailed && e.doc.getElementById("form").hidden !== true);
+}
+for (const code of ["user_already_exists", "email_exists"]) {
+  const { FF, e } = await doSignup({ signUp: { data: { user: null }, error: { code, message: "x" } } });
+  check("signUp " + code + " → exactly the new-account text (no enumeration)",
+        e.doc.getElementById("msg").textContent === FF.TEXT.signupSent);
+}
 for (const [name, fill] of [["no ack", (d) => { d.getElementById("ack").checked = false; }],
                             ["short password", (d) => { d.getElementById("password").value = "short"; }],
                             ["bad email", (d) => { d.getElementById("email").value = "nope"; }],
@@ -272,6 +282,12 @@ async function doUpdate(plan, flag, p1, p2) {
   check("the one-shot flag is cleared on use", r.e.storage.getItem(r.FF.RECOVERY_FLAG) === null);
 }
 
+{
+  const r = await doUpdate({ getSession: RECOVERY, updateUser: { data: {}, error: { code: "same_password", message: "RAW server text" } } }, true, "newpassword1", "newpassword1");
+  check("updateUser refused → fixed TEXT (no raw server message), no sign-out",
+        r.e.doc.getElementById("msg").textContent === r.FF.TEXT.passwordFailed && !r.e.sb.calls.some((x) => x.name === "signOut"));
+}
+
 // ── account ──────────────────────────────────────────────────────────────
 console.log("6. /account");
 const KEY = "FF-AB12CD34-EF56GH78";
@@ -322,7 +338,9 @@ async function doAccount(cust, cfg = {}) {
   const e = env(makeSb({ getSession: SIGNED, customer: { data: { status: "active", license_key: KEY } } }));
   await FF.boot("account", e);
   await e.doc.getElementById("signout").listeners.click();
-  check("sign out → signOut() then /portal", e.sb.calls.some((x) => x.name === "signOut") && e.navs.at(-1) === "/portal");
+  const so = e.sb.calls.filter((x) => x.name === "signOut");
+  check("sign out → signOut({scope:'local'}) then /portal (never the global default)",
+        so.length === 1 && so[0].args[0] && so[0].args[0].scope === "local" && e.navs.at(-1) === "/portal");
 }
 
 // ── static checks on the shipped files ───────────────────────────────────
