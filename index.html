@@ -967,7 +967,7 @@ body { padding-bottom: 44px; }
         <div class="step-num">01</div>
         <div class="step-icon">🏢</div>
         <h3>Set Your Limits</h3>
-        <p>Enter your account's contract limits, trailing thresholds, and daily caps. Every order is checked against them before it is sent.</p>
+        <p>Enter your account's contract limit. Every order is checked against it before it is sent.</p>
         <div class="step-connector"></div>
       </div>
       <div class="step">
@@ -1010,7 +1010,7 @@ body { padding-bottom: 44px; }
       <div class="feature">
         <div class="feat-icon">[EOD]</div>
         <h3>Account Limits</h3>
-        <p>Every copied order is checked against the contract limit you set for that account. An account that reaches the daily loss cap you set is halted for the day (it counts realized P&amp;L, so a closing fill can go past the cap). Trailing-drawdown and consistency rules are not enforced: watch those yourself.</p>
+        <p>Every copied order is checked against the contract limit you set for that account. A daily loss cap can be set, but today it only halts simulated copying: it is not yet enforced on live orders. Daily loss, trailing-drawdown and consistency rules on a live account are yours to watch.</p>
         <span class="feat-tag">LIVE</span>
       </div>
       <div class="feature">
@@ -1046,7 +1046,7 @@ body { padding-bottom: 44px; }
   <div class="wrap">
     <div class="section-label">// COMPATIBILITY</div>
     <h2 class="section-title">Works with your<br>existing account.</h2>
-    <p class="section-sub">FuturesForged works through NinjaTrader&nbsp;8 on Windows. You enter your account's contract limits and daily loss caps, and every order is checked against them.</p>
+    <p class="section-sub">FuturesForged works through NinjaTrader&nbsp;8 on Windows. You enter your account's contract limits, and every order is checked against them.</p>
     <div class="firms-grid">
       <div class="firm-add" style="grid-column:1/-1;">
         <div class="firm-add-text" style="line-height:1.8;">
@@ -1539,7 +1539,7 @@ body { padding-bottom: 44px; }
       </div>
       <div class="faq-item">
         <div class="faq-q">Which firms does this work with?</div>
-        <div class="faq-a">FuturesForged works through NinjaTrader&nbsp;8 on Windows, so it works with accounts you can trade in NinjaTrader&nbsp;8. We do not claim approval, endorsement, or a partnership with any proprietary trading firm. Contract limits and daily loss caps are values you enter for your own account and plan size, and every order is checked against them. Verify your firm's automation policy before going live.</div>
+        <div class="faq-a">FuturesForged works through NinjaTrader&nbsp;8 on Windows, so it works with accounts you can trade in NinjaTrader&nbsp;8. We do not claim approval, endorsement, or a partnership with any proprietary trading firm. Contract limits are values you enter for your own account and plan size, and every order is checked against them. The daily loss cap is not yet enforced on live orders. Verify your firm's automation policy before going live.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">Do I need to know how to code?</div>
@@ -1555,7 +1555,7 @@ body { padding-bottom: 44px; }
       </div>
       <div class="faq-item">
         <div class="faq-q">Can I run it on multiple accounts?</div>
-        <div class="faq-a">Yes. Pro supports multiple accounts, each with its own independent strategy toggles, position sizing, contract limit and daily loss cap. Desk adds a multi-account dashboard for managing them all from a single view.</div>
+        <div class="faq-a">Yes. Pro supports multiple accounts, each with its own independent strategy toggles, position sizing and contract limit. Desk adds a multi-account dashboard for managing them all from a single view.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the Strategy Generator?</div>
