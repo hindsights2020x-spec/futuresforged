@@ -32,5 +32,8 @@ ok("security wording matches the token file (audit-win-2 8802 C1)", !/Other prog
 ok("no live daily-loss-cap halt claimed (audit-win-2 8842 C1, audit-api 8845 B1)",
    !/halted for the day|daily (loss )?caps?[^.]*checked against|trailing thresholds/i.test(html)
    && /not yet enforced on live orders/.test(html));
+ok("no automatic sizing or single-machine claim (audit-win-2 8887 C1 + n1)",
+   !/Never overexpose|auto-switch|scale automatically with your account balance|single machine|one machine per subscription|cannot be cloned/i.test(html)
+   && /up to 3 of your machines/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
