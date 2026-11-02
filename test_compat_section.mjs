@@ -14,4 +14,14 @@ ok("Mac worded as not yet available", /Mac:<\/strong> not available yet\. Mac su
 ok("no current Mac support claimed", !/Mac (is|works|supported)/i.test(b));
 ok("names no firm", !/(Apex|Topstep|MFFU|Tradeify|Lucid|Take Profit|My Funded)/i.test(b));
 ok("no unreleased feature listed", !/market strip/i.test(b));
+// Tom 2026-11-02 "fix them in this PR": no stale Tradovate / shelved-ES copy anywhere.
+ok("no Tradovate anywhere", !/tradovate/i.test(html));
+ok("no shelved Momentum Breakout ES", !/Momentum Breakout ES/.test(html) && !/ES FUTURES — LIVE/.test(html));
+const items = (html.match(/class="strat-item"/g) || []).length;
+const words = ["Zero", "One", "Two", "Three", "Four", "Five", "Six"];
+ok("strategy count matches the list (" + items + ")", html.includes(words[items] + " strategies.<br>")
+   && (html.match(new RegExp("</span> " + items + " LIVE STRATEGIES<", "g")) || []).length === 2
+   && html.includes("All " + items + " live strategies"));
+ok("no old dashboard-password or .env claim", !/bcrypt|\.env file/.test(html));
+ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
