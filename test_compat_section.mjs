@@ -37,5 +37,7 @@ ok("no automatic sizing or single-machine claim (audit-win-2 8887 C1 + n1)",
    && /up to 3 of your machines/.test(html));
 ok("regime scanner worded as live (ECHO 8890)", !/1m, 5m, and 15m|pauses trend strategies|> Regime scanner</.test(html)
    && /Momentum Breakout skips new entries while the market reads choppy or low-volatility/.test(html));
+ok("live entry = order-flow trigger, no 6-indicator gate (ECHO 8896)", !/6-Indicator|5 of 6 indicators|6-indicator confluence/i.test(html)
+   && /<h3>Order-Flow Entry Trigger<\/h3>/.test(html) && /enters on absorption or a confirmed sweep/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
