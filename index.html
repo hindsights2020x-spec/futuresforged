@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FuturesForged — Forged for Funded Traders</title>
-<meta name="description" content="FuturesForged is precision-built automation for futures traders. Connect your account, set your risk limits, and trade NQ and ES on autopilot.">
+<meta name="description" content="FuturesForged is precision-built automation for futures traders. Connect your account, set your risk limits, and trade NQ on autopilot.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -910,8 +910,8 @@ body { padding-bottom: 44px; }
     <h1>Forged for<br><em>funded traders.</em></h1>
     <p class="hero-sub">
       FuturesForged plugs directly into your futures account and trades
-      NQ and ES using institutional-grade algorithms — precision-built,
-      fully automated, with the risk limits you set enforced on every order.
+      NQ using institutional-grade algorithms — precision-built,
+      fully automated, with the contract limit you set checked on every order.
     </p>
 
     <!-- TESTING STATUS (replaced the expired Aug-1 launch countdown) -->
@@ -940,13 +940,13 @@ body { padding-bottom: 44px; }
 <div class="ticker">
   <div class="ticker-track">
     <!-- First copy -->
-    <span class="ticker-item"><span class="ticker-dot">●</span> RISK LIMITS ENFORCED</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> CONTRACT LIMITS CHECKED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NINJATRADER 8</span>
     <!-- Duplicate for seamless loop -->
-    <span class="ticker-item"><span class="ticker-dot">●</span> RISK LIMITS ENFORCED</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> CONTRACT LIMITS CHECKED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
@@ -1009,8 +1009,8 @@ body { padding-bottom: 44px; }
       </div>
       <div class="feature">
         <div class="feat-icon">[EOD]</div>
-        <h3>Prop Rule Enforcement</h3>
-        <p>Daily loss limits, EOD trailing floors, intraday floors, 50% consistency rules, and $9,500 daily caps all enforced automatically.</p>
+        <h3>Account Limits</h3>
+        <p>Every copied order is checked against the contract limit you set for that account. An account that reaches the daily loss cap you set is halted for the day (it counts realized P&amp;L, so a closing fill can go past the cap). Trailing-drawdown and consistency rules are not enforced: watch those yourself.</p>
         <span class="feat-tag">LIVE</span>
       </div>
       <div class="feature">
@@ -1146,7 +1146,7 @@ body { padding-bottom: 44px; }
           <li><span class="check">&#10003;</span> Real-time L2 signals</li>
           <li><span class="check">&#10003;</span> Single prop firm account</li>
           <li><span class="check">&#10003;</span> Eval &amp; sim-funded (no live accounts)</li>
-          <li><span class="check">&#10003;</span> Your account limits enforced on every order</li>
+          <li><span class="check">&#10003;</span> Your contract limit checked on every order</li>
           <li><span class="check">&#10003;</span> Real-time dashboard</li>
         </ul>
         <a href="https://buy.stripe.com/7sY8wPc2y5l17LFf0c08g02" class="btn-plan btn-plan-pro" rel="noopener">Subscribe &mdash; $99/mo</a>
@@ -1236,21 +1236,21 @@ body { padding-bottom: 44px; }
             <div style="font-family:var(--mono);color:var(--green);font-size:12px;flex-shrink:0;margin-top:2px;">[02]</div>
             <div>
               <div style="font-size:12px;color:var(--white);letter-spacing:1px;margin-bottom:3px;">DASHBOARD LOCKED TO YOUR APP</div>
-              <div style="font-size:11px;color:var(--text2);line-height:1.6;">The dashboard runs on your own computer only (127.0.0.1) and answers only requests that carry a key held by the FuturesForged app window. Other programs and other computers on your network are refused.</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.6;">The dashboard runs on your own computer only (127.0.0.1) and answers only requests that carry the app's private key. Other computers on your network cannot reach it, and programs without that key are refused.</div>
             </div>
           </div>
           <div style="display:flex;gap:12px;align-items:flex-start;">
             <div style="font-family:var(--mono);color:var(--green);font-size:12px;flex-shrink:0;margin-top:2px;">[03]</div>
             <div>
               <div style="font-size:12px;color:var(--white);letter-spacing:1px;margin-bottom:3px;">LIVE ORDERS OFF UNTIL YOU TURN THEM ON</div>
-              <div style="font-size:11px;color:var(--text2);line-height:1.6;">Real orders stay off until you switch on live routing, and only accounts you have explicitly routed can receive one. Every copied order is checked against that account's contract limit before it is sent.</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.6;">Real orders are off by default, and only accounts that have been explicitly given a live route can receive one. Every copied order is checked against that account's contract limit before it is sent.</div>
             </div>
           </div>
           <div style="display:flex;gap:12px;align-items:flex-start;">
             <div style="font-family:var(--mono);color:var(--green);font-size:12px;flex-shrink:0;margin-top:2px;">[04]</div>
             <div>
               <div style="font-size:12px;color:var(--white);letter-spacing:1px;margin-bottom:3px;">YOUR TRADE HISTORY STAYS ON YOUR COMPUTER</div>
-              <div style="font-size:11px;color:var(--text2);line-height:1.6;">Your positions, P&L, account balances, and order history are stored on your own computer. The app contacts our servers to check your licence, to read published signals and chart data, and, before a live copy order, to check that no other copy of FuturesForged is trading the same broker account (it sends that account's ID, never your login).</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.6;">Your positions, P&L, account balances, and order history are stored on your own computer. The app contacts our servers to check your licence (your key and a hashed machine ID), to read published signals and chart data, to look for app updates, and, before a live copy order, to try to check (best effort) that no other copy of FuturesForged is trading the same broker account (it sends that account's ID, never your login).</div>
             </div>
           </div>
         </div>
@@ -1555,7 +1555,7 @@ body { padding-bottom: 44px; }
       </div>
       <div class="faq-item">
         <div class="faq-q">Can I run it on multiple accounts?</div>
-        <div class="faq-a">Yes. Pro supports multiple accounts, each with its own independent strategy toggles, position sizing, and prop rule enforcement. Desk adds a multi-account dashboard for managing them all from a single view.</div>
+        <div class="faq-a">Yes. Pro supports multiple accounts, each with its own independent strategy toggles, position sizing, contract limit and daily loss cap. Desk adds a multi-account dashboard for managing them all from a single view.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">What is the Strategy Generator?</div>
@@ -1584,7 +1584,7 @@ body { padding-bottom: 44px; }
     <div class="footer-inner">
       <div class="footer-brand">
         <a class="logo" href="#">FUTURES<span>FORGED</span></a>
-        <p>Precision-forged futures automation for funded prop firm accounts. Built for NQ and ES.</p>
+        <p>Precision-forged futures automation for funded prop firm accounts. Built for NQ.</p>
       </div>
       <div class="footer-links">
         <h4>Product</h4>

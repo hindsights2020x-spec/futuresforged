@@ -24,6 +24,10 @@ ok("strategy count matches the list (" + items + ")", html.includes(words[items]
    && html.includes("All " + items + " live strategies"));
 ok("no old dashboard-password or .env claim", !/bcrypt|\.env file/.test(html));
 ok("no unconfirmed strategy or rule-enforcement claim (Tom: remove them both)",
-   !/Box MR London/.test(html) && !/Will it blow my funded account\?/.test(html) && !/exact rules automatically/.test(html));
+   !/Box MR London/.test(html) && !/Will it blow my funded account\?/.test(html) && !/exact rules automatically/.test(html)
+   && !/rule enforcement|RISK LIMITS ENFORCED|limits enforced|enforced automatically/i.test(html));
+ok("no ES left after the ES strategy was removed (audit-api 8806 C1)", !/NQ and ES|\bES on autopilot|Built for NQ and ES/.test(html));
+ok("security wording matches the token file (audit-win-2 8802 C1)", !/Other programs and other computers/.test(html)
+   && /programs without that key are refused/.test(html) && /best effort/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
