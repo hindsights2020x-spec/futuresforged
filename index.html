@@ -942,13 +942,13 @@ body { padding-bottom: 44px; }
     <!-- First copy -->
     <span class="ticker-item"><span class="ticker-dot">●</span> RISK LIMITS ENFORCED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
-    <span class="ticker-item"><span class="ticker-dot">●</span> 4 LIVE STRATEGIES</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NINJATRADER 8</span>
     <!-- Duplicate for seamless loop -->
     <span class="ticker-item"><span class="ticker-dot">●</span> RISK LIMITS ENFORCED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
-    <span class="ticker-item"><span class="ticker-dot">●</span> 4 LIVE STRATEGIES</span>
+    <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NINJATRADER 8</span>
   </div>
@@ -1066,7 +1066,7 @@ body { padding-bottom: 44px; }
 <section class="strategies" id="strategies">
   <div class="wrap">
     <div class="section-label">// LIVE STRATEGIES</div>
-    <h2 class="section-title">Four strategies.<br>All independently toggleable.</h2>
+    <h2 class="section-title">Three strategies.<br>All independently toggleable.</h2>
     <div class="strat-list">
       <div class="strat-item">
         <div>
@@ -1076,17 +1076,6 @@ body { padding-bottom: 44px; }
         <div class="strat-desc">Detects liquidity sweeps of prior session highs/lows and fades the move back through the level. ATR-based stops and targets.</div>
         <div class="strat-metric" style="display:none">
           <div class="strat-pf">2.22</div>
-          <div class="strat-pf-label">OOS PF</div>
-        </div>
-      </div>
-      <div class="strat-item">
-        <div>
-          <div class="strat-name">Box MR London <span class="strat-tier tier-basic">BASIC</span></div>
-          <div class="strat-session mono">08:00 – 10:00 UTC</div>
-        </div>
-        <div class="strat-desc">Forms a consolidation box during the London pre-market and trades mean reversion back into the range on false breakouts.</div>
-        <div class="strat-metric" style="display:none">
-          <div class="strat-pf">1.87</div>
           <div class="strat-pf-label">OOS PF</div>
         </div>
       </div>
@@ -1153,7 +1142,7 @@ body { padding-bottom: 44px; }
         <div class="plan-save">Founding price &mdash; was $129/mo</div>
         <hr class="plan-divider">
         <ul class="plan-features">
-          <li><span class="check">&#10003;</span> All 4 live strategies</li>
+          <li><span class="check">&#10003;</span> All 3 live strategies</li>
           <li><span class="check">&#10003;</span> Real-time L2 signals</li>
           <li><span class="check">&#10003;</span> Single prop firm account</li>
           <li><span class="check">&#10003;</span> Eval &amp; sim-funded (no live accounts)</li>
@@ -1559,10 +1548,6 @@ body { padding-bottom: 44px; }
       <div class="faq-item">
         <div class="faq-q">How does position sizing work?</div>
         <div class="faq-a">You choose each account's size in the app: a ratio to the account being copied, and a maximum number of contracts for that account. Every copied order is checked against that maximum before it is sent. Balances and P&L are read live from NinjaTrader through the add-on.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">Will it blow my funded account?</div>
-        <div class="faq-a">FuturesForged enforces your firm's exact rules automatically — it will never let you trade if you're within one stop loss of the floor. Emergency stop, daily loss limits, and intraday trailing floors are all applied in real time. No trading system eliminates risk, but the limits you configure are enforced more strictly than most human traders follow them manually.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">What are the OOS profit factors based on?</div>

@@ -23,5 +23,7 @@ ok("strategy count matches the list (" + items + ")", html.includes(words[items]
    && (html.match(new RegExp("</span> " + items + " LIVE STRATEGIES<", "g")) || []).length === 2
    && html.includes("All " + items + " live strategies"));
 ok("no old dashboard-password or .env claim", !/bcrypt|\.env file/.test(html));
+ok("no unconfirmed strategy or rule-enforcement claim (Tom: remove them both)",
+   !/Box MR London/.test(html) && !/Will it blow my funded account\?/.test(html) && !/exact rules automatically/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
