@@ -39,5 +39,13 @@ ok("regime scanner worded as live (ECHO 8890)", !/1m, 5m, and 15m|pauses trend s
    && /Momentum Breakout skips new entries while the market reads choppy or low-volatility/.test(html));
 ok("live entry = order-flow trigger, no 6-indicator gate (ECHO 8896)", !/6-Indicator|5 of 6 indicators|6-indicator confluence/i.test(html)
    && /<h3>Order-Flow Entry Trigger<\/h3>/.test(html) && /enters on absorption or a confirmed sweep/.test(html));
+{ // Tom 8940: 1a remove the Momentum 4.14 OOS PF + walk-forward claim; 2 the sim-only cap sentence is not in the LIVE card
+  const page = html.replace(/<!--[\s\S]*?-->/g, "");
+  const card = (page.match(/<h3>Account Limits<\/h3>[\s\S]*?<\/div>/) || [""])[0];
+  const mom = (page.match(/strat-name">Momentum Breakout NQ[\s\S]*?<\/section>/) || [""])[0];
+  ok("Tom 8940: no 4.14 / Momentum walk-forward claim; daily-cap sentence out of the LIVE card",
+     !/4\.14/.test(page) && !/walk-forward/i.test(mom) && /feat-tag">LIVE</.test(card)
+     && !/daily loss cap/i.test(card) && /only halts simulated copying: it is not yet enforced on live orders/.test(page));
+}
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
