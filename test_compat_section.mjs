@@ -35,5 +35,7 @@ ok("no live daily-loss-cap halt claimed (audit-win-2 8842 C1, audit-api 8845 B1)
 ok("no automatic sizing or single-machine claim (audit-win-2 8887 C1 + n1)",
    !/Never overexpose|auto-switch|scale automatically with your account balance|single machine|one machine per subscription|cannot be cloned/i.test(html)
    && /up to 3 of your machines/.test(html));
+ok("regime scanner worded as live (ECHO 8890)", !/1m, 5m, and 15m|pauses trend strategies|> Regime scanner</.test(html)
+   && /Momentum Breakout skips new entries while the market reads choppy or low-volatility/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
