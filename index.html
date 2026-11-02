@@ -943,13 +943,11 @@ body { padding-bottom: 44px; }
     <span class="ticker-item"><span class="ticker-dot">●</span> CONTRACT LIMITS CHECKED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
-    <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NINJATRADER 8</span>
     <!-- Duplicate for seamless loop -->
     <span class="ticker-item"><span class="ticker-dot">●</span> CONTRACT LIMITS CHECKED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NQ FUTURES — LIVE</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> 3 LIVE STRATEGIES</span>
-    <span class="ticker-item"><span class="ticker-dot">●</span> OOS VALIDATED</span>
     <span class="ticker-item"><span class="ticker-dot">●</span> NINJATRADER 8</span>
   </div>
 </div>
@@ -1020,10 +1018,10 @@ body { padding-bottom: 44px; }
         <span class="feat-tag">LIVE</span>
       </div>
       <div class="feature">
-        <div class="feat-icon">[WF]</div>
-        <h3>Walk-Forward Validated</h3>
-        <p>All strategies are validated on out-of-sample data before deployment. No curve fitting. Live signal results are published in full on the Signal Performance page.</p>
-        <span class="feat-tag">VERIFIED</span>
+        <div class="feat-icon">[PUB]</div>
+        <h3>Live Results Published</h3>
+        <p>Live signal results are published in full on the Signal Performance page. This site shows no backtest figures for the current strategies.</p>
+        <span class="feat-tag">PUBLIC</span>
       </div>
       <div class="feature">
         <div class="feat-icon">[AI]</div>
@@ -1074,10 +1072,6 @@ body { padding-bottom: 44px; }
           <div class="strat-session mono">13:00 – 17:00 UTC</div>
         </div>
         <div class="strat-desc">Detects liquidity sweeps of prior session highs/lows and fades the move back through the level. ATR-based stops and targets.</div>
-        <div class="strat-metric" style="display:none">
-          <div class="strat-pf">2.22</div>
-          <div class="strat-pf-label">OOS PF</div>
-        </div>
       </div>
       <div class="strat-item">
         <div>
@@ -1085,10 +1079,6 @@ body { padding-bottom: 44px; }
           <div class="strat-session mono">20:00 – 21:00 UTC</div>
         </div>
         <div class="strat-desc">Same box mean reversion logic applied to the Power Hour session. Exploits the high-volume, tight-range characteristics of close.</div>
-        <div class="strat-metric" style="display:none">
-          <div class="strat-pf">1.94</div>
-          <div class="strat-pf-label">OOS PF</div>
-        </div>
       </div>
       <div class="strat-item">
         <div>
@@ -1545,10 +1535,6 @@ body { padding-bottom: 44px; }
         <div class="faq-a">You choose each account's size in the app: a ratio to the account being copied, and a maximum number of contracts for that account. Every copied order is checked against that maximum before it is sent. Balances and P&L are read live from NinjaTrader through the add-on.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">What are the OOS profit factors based on?</div>
-        <div class="faq-a">All stated performance metrics are from out-of-sample walk-forward backtests on 2 years of Databento GLBX.MDP3 1-minute data. The IS/OOS split is 70/30. Past performance does not guarantee future results. These are backtested figures, not live trading results.</div>
-      </div>
-      <div class="faq-item">
         <div class="faq-q">Can I run it on multiple accounts?</div>
         <div class="faq-a">Yes. Pro supports multiple accounts, each with its own independent strategy toggles, position sizing and contract limit. Desk adds a multi-account dashboard for managing them all from a single view.</div>
       </div>
@@ -1608,8 +1594,8 @@ body { padding-bottom: 44px; }
         Futures trading involves substantial risk of loss and is not appropriate for all investors.
         Past performance — including backtested results — is not indicative of future results.
         FuturesForged is software that automates a trading strategy; it does not guarantee profits or
-        protect against losses. All performance figures shown are from walk-forward backtests on
-        historical data and do not represent live trading results. You should only trade with
+        protect against losses. Live signal results on the Signal Performance page are past results
+        and do not predict future results. You should only trade with
         capital you can afford to lose. FuturesForged is not a registered investment adviser or
         commodity trading adviser.
       </p>

@@ -47,5 +47,8 @@ ok("live entry = order-flow trigger, no 6-indicator gate (ECHO 8896)", !/6-Indic
      !/4\.14/.test(page) && !/walk-forward/i.test(mom) && /feat-tag">LIVE</.test(card)
      && !/daily loss cap/i.test(card) && /only halts simulated copying: it is not yet enforced on live orders/.test(page));
 }
+ok("Tom 8940 1a page-wide: no OOS / walk-forward / backtest-figure claim (generator FAQ describes its process only)",
+   !/\bOOS\b|out-of-sample|Walk-Forward Validated|walk-forward backtests|strat-pf"/i.test(html.replace(/<!--[\s\S]*?-->/g, ""))
+   && /<h3>Live Results Published<\/h3>/.test(html));
 ok("div tags balance", (html.match(/<div/g) || []).length === (html.match(/<\/div>/g) || []).length);
 process.exit(fail ? 1 : 0);
